@@ -1,0 +1,108 @@
+# Canonical taxonomy for nix-arsenal.
+#
+# This is OUR taxonomy, deliberately not BlackArch's or Kali's. Importers map
+# upstream groups into these via the `maps` key. A tool may hold several
+# categories, but keep it under four -- if everything is in "recon" then the
+# category carries no information.
+#
+# Adding a category is a breaking change for profiles. Discuss in an issue first.
+
+[recon]
+label = "Reconnaissance"
+description = "Host, port, service and asset discovery against a known target scope."
+maps = ["blackarch-recon", "blackarch-scanner", "kali-information-gathering", "remnux-network"]
+
+[osint]
+label = "OSINT"
+description = "Open-source intelligence: people, domains, orgs, breach data, social."
+maps = ["blackarch-recon", "kali-information-gathering"]
+
+[web]
+label = "Web Application"
+description = "HTTP/S application testing, fuzzing, proxies, CMS and API tooling."
+maps = ["blackarch-webapp", "blackarch-fuzzer", "blackarch-proxy", "kali-web"]
+
+[network]
+label = "Network"
+description = "Traffic capture, MITM, spoofing, tunnelling, pivoting, protocol attacks."
+maps = ["blackarch-sniffer", "blackarch-spoof", "blackarch-tunnel", "blackarch-networking", "kali-sniffing-spoofing"]
+
+[wireless]
+label = "Wireless"
+description = "802.11, Bluetooth, Zigbee and other RF-adjacent link-layer attacks."
+maps = ["blackarch-wireless", "blackarch-bluetooth", "kali-802-11"]
+
+[radio]
+label = "SDR & Hardware"
+description = "Software-defined radio, RFID/NFC, JTAG/UART, firmware extraction, automotive."
+maps = ["blackarch-radio", "blackarch-hardware", "kali-sdr", "kali-hardware"]
+
+[active-directory]
+label = "Active Directory & Identity"
+description = "Kerberos, LDAP, SMB, ADCS, Entra ID and federation attack tooling."
+maps = ["blackarch-windows", "kali-windows-resources"]
+
+[passwords]
+label = "Passwords & Cracking"
+description = "Online brute force, offline hash cracking, wordlists, rule generation."
+maps = ["blackarch-cracker", "kali-passwords"]
+
+[exploitation]
+label = "Exploitation"
+description = "Exploit frameworks, public exploit collections, payload generation."
+maps = ["blackarch-exploitation", "kali-exploitation-tools"]
+
+[post-exploitation]
+label = "Post-Exploitation"
+description = "Privilege escalation, persistence, credential access, lateral movement, C2."
+maps = ["blackarch-backdoor", "blackarch-automation", "kali-post-exploitation"]
+
+[reverse-engineering]
+label = "Reverse Engineering"
+description = "Disassemblers, decompilers, debuggers, binary analysis, exploit development."
+maps = ["blackarch-reversing", "blackarch-disassembler", "blackarch-debugger", "kali-reverse-engineering", "remnux-reversing"]
+
+[malware-analysis]
+label = "Malware Analysis"
+description = "Static and dynamic malware triage, unpacking, document and script analysis."
+maps = ["blackarch-malware", "remnux-malware", "remnux-documents", "remnux-scripts"]
+
+[forensics]
+label = "Digital Forensics"
+description = "Disk, memory, filesystem, mobile and artefact analysis; incident response."
+maps = ["blackarch-forensic", "kali-forensics", "remnux-memory"]
+
+[cloud]
+label = "Cloud & Container"
+description = "AWS/Azure/GCP assessment, Kubernetes, container and IaC security."
+maps = ["blackarch-cloud", "kali-cloud"]
+
+[mobile]
+label = "Mobile"
+description = "Android and iOS application analysis, instrumentation and device tooling."
+maps = ["blackarch-mobile", "kali-mobile"]
+
+[crypto]
+label = "Cryptography"
+description = "Cipher attacks, TLS assessment, key analysis, steganography."
+maps = ["blackarch-crypto", "blackarch-stego", "kali-crypto-stego"]
+
+[defense]
+label = "Defensive & Monitoring"
+description = "Detection engineering, hardening, IDS, log analysis, threat hunting, YARA/Sigma."
+maps = ["blackarch-defensive", "remnux-network"]
+
+[reporting]
+label = "Reporting & Collaboration"
+description = "Note taking, evidence handling, screenshotting, report generation."
+maps = ["kali-reporting-tools"]
+
+[wordlists]
+label = "Wordlists & Data"
+description = "Wordlists, payload corpora, signature and template collections."
+maps = ["blackarch-wordlist"]
+
+[utilities]
+label = "Utilities"
+description = "Shared plumbing: shells, editors, transfer, conversion, general CLI."
+maps = []
