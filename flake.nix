@@ -14,7 +14,12 @@
     let
       inherit (nixpkgs) lib;
 
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      # Linux only. The capability layer -- security.wrappers, drivers, udev,
+      # detonation VMs -- is what Argos is for, and none of it exists on macOS,
+      # where you would get a bare bag of binaries most security tools cannot
+      # use anyway. NixOS is the full experience; other Linux with Nix gets the
+      # binaries plus reproducibility and degrades capabilities to sudo.
+      systems = [ "x86_64-linux" "aarch64-linux" ];
 
       # Unfree is opt-in per package, never blanket-allowed. The list is derived
       # from the catalog so there is one place to declare "this is unfree" --

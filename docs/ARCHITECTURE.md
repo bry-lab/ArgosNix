@@ -87,7 +87,7 @@ Composed from categories, defined in `catalog/profiles.toml`, resolved by both
 `nix/profiles.nix` and `tools/arsenal/profiles.py`.
 
 Two implementations of the same logic is a smell. It is deliberate: contributors
-on macOS without Nix still need to ask "what is in the dfir profile", and
+without Nix on their machine still need to ask "what is in the dfir profile", and
 shelling out to `nix eval` for every CLI query is unusable. Both paths run in CI.
 
 ## Capabilities
