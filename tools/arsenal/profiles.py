@@ -2,7 +2,7 @@
 
 This mirrors nix/profiles.nix exactly. Two implementations of the same logic is
 a smell, but the alternative is making the CLI shell out to nix for every
-query, and contributors on macOS without nix installed still need to be able to
+query, and contributors without nix installed still need to be able to
 ask "what is in the dfir profile". The `profiles-resolve` flake check evaluates
 every profile through the Nix path, so a divergence fails CI.
 """

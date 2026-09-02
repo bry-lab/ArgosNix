@@ -1,7 +1,7 @@
 # home-manager module.
 #
-# For people who want the tools on a machine they do not control the OS of --
-# Ubuntu at work, a shared box, macOS. You get every binary and none of the
+# For people who want the tools on a Linux machine they do not control the OS
+# of -- Ubuntu at work, a shared box. You get every binary and none of the
 # capabilities: no raw sockets, no monitor mode, no udev rules. That is a real
 # limitation, not a bug we will fix, and the module says so at activation time
 # rather than letting you discover it mid-engagement.

@@ -91,8 +91,8 @@ programs.arsenal = {
 };
 ```
 
-On macOS or non-NixOS Linux you get the binaries and not the capabilities. The
-shell tells you which tools are affected rather than letting you find out
+On non-NixOS Linux you get the binaries and not the capabilities. The shell
+tells you which tools are affected rather than letting you find out
 mid-engagement.
 
 ## Binary cache
