@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OWNER/nix-arsenal/catalog/schema.json",
+  "title": "nix-arsenal catalog entry",
+  "description": "One entry per canonical tool. The map key is the canonical id (lowercase, [a-z0-9-]). Identity is the `upstream` URL, not the id -- distro names diverge, upstream repos do not.",
+  "type": "object",
+  "additionalProperties": { "$ref": "#/$defs/tool" },
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": ["upstream", "categories", "tier"],
+      "additionalProperties": false,
+      "properties": {
+        "upstream": {
+          "type": "string",
+          "format": "uri",
+          "description": "Canonical source URL. THE dedupe key. Prefer the VCS repo over a homepage. Normalised by arsenal.identity before comparison."
+        },
+        "description": { "type": "string", "maxLength": 200 },
+        "license": {
+          "type": "string",
+          "description": "SPDX identifier where known, or 'unfree'."
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": { "type": "string" },
+          "description": "Keys from catalog/taxonomy.toml."
+        },
+        "tier": {
+          "type": "integer",
+          "enum": [1, 2, 3, 4],
+          "description": "1 = in nixpkgs. 2 = mechanically packageable (go/rust/python/script). 3 = manual work. 4 = will not package (unfree, blob, abandoned)."
+        },
+        "nixpkgs": {
+          "type": "string",
+          "description": "Attribute path in nixpkgs, e.g. 'nmap' or 'python3Packages.oletools'. Required when tier = 1."
+        },
+        "local": {
+          "type": "string",
+          "description": "Attribute name under pkgs/by-name/ when packaged in this repo."
+        },
+        "builder": {
+          "type": "string",
+          "enum": ["go", "rust", "python", "python2", "ruby", "node", "cmake", "autotools", "make", "script", "java", "dotnet", "other"],
+          "description": "Hint for the tier-2 generator."
+        },
+        "unfree": { "type": "boolean", "default": false },
+        "platforms": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Nix platform strings. Defaults to linux-only if omitted."
+        },
+        "capabilities": {
+          "type": "array",
+          "items": { "enum": ["raw-socket", "net-admin", "packet-capture", "usb", "kvm", "root"] },
+          "description": "Runtime privileges the tool needs. Drives modules/nixos wrappers and README warnings. A devShell cannot grant these."
+        },
+        "alternatives": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Canonical ids of tools that supersede or substitute this one."
+        },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other names this tool ships under. Used by the importers to short-circuit lookups."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "unmaintained", "archived", "superseded"],
+          "default": "active"
+        },
+        "notes": { "type": "string" },
+        "provenance": {
+          "type": "object",
+          "description": "Which upstream distro ships this, under what package name. Populated by importers; drives the coverage dashboard. Do not hand-edit.",
+          "additionalProperties": false,
+          "properties": {
+            "kali": { "type": "string" },
+            "blackarch": { "type": "string" },
+            "remnux": { "type": "string" },
+            "athena": { "type": "string" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "tier": { "const": 1 } }, "required": ["tier"] },
+          "then": { "required": ["nixpkgs"] }
+        }
+      ]
+    }
+  }
+}

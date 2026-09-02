@@ -1,0 +1,68 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[hashcat]
+upstream = "https://github.com/hashcat/hashcat"
+description = "GPU-accelerated password recovery."
+license = "MIT"
+categories = ["passwords", "crypto"]
+tier = 1
+nixpkgs = "hashcat"
+
+[hashcat-utils]
+upstream = "https://github.com/hashcat/hashcat-utils"
+description = "Helper utilities for hashcat workflows."
+license = "MIT"
+categories = ["passwords"]
+tier = 1
+nixpkgs = "hashcat-utils"
+
+[hashid]
+upstream = "https://github.com/psypanda/hashID"
+description = "Identify hash algorithms."
+license = "GPL-3.0"
+categories = ["crypto", "passwords"]
+tier = 1
+nixpkgs = "hashid"
+
+[hcxdumptool]
+upstream = "https://github.com/ZerBea/hcxdumptool"
+description = "Capture PMKIDs and handshakes from WLAN devices."
+license = "MIT"
+categories = ["wireless"]
+tier = 1
+nixpkgs = "hcxdumptool"
+capabilities = ["net-admin", "raw-socket"]
+
+[hcxtools]
+upstream = "https://github.com/ZerBea/hcxtools"
+description = "Convert wireless captures for hashcat."
+license = "MIT"
+categories = ["wireless", "passwords"]
+tier = 1
+nixpkgs = "hcxtools"
+
+[holehe]
+upstream = "https://github.com/megadose/holehe"
+description = "Check which sites an email address is registered on."
+license = "GPL-3.0"
+categories = ["osint"]
+tier = 1
+nixpkgs = "holehe"
+
+[httpx]
+upstream = "https://github.com/projectdiscovery/httpx"
+description = "Fast multi-purpose HTTP probe."
+license = "MIT"
+categories = ["recon", "web"]
+tier = 1
+nixpkgs = "httpx"
+notes = "nixpkgs also has python3Packages.httpx, an unrelated HTTP client."
+
+[hydra]
+upstream = "https://github.com/vanhauser-thc/thc-hydra"
+description = "Parallelised online login brute forcer."
+license = "AGPL-3.0"
+categories = ["passwords"]
+tier = 1
+nixpkgs = "thc-hydra"

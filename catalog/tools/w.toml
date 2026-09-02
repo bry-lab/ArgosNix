@@ -1,0 +1,45 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[waybackurls]
+upstream = "https://github.com/tomnomnom/waybackurls"
+description = "Fetch known URLs from the Wayback Machine."
+license = "MIT"
+categories = ["web", "osint"]
+tier = 1
+nixpkgs = "waybackurls"
+
+[whois]
+upstream = "https://github.com/rfc1036/whois"
+description = "WHOIS client."
+license = "GPL-2.0"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "whois"
+
+[wifite2]
+upstream = "https://github.com/derv82/wifite2"
+description = "Automated wireless auditing."
+license = "GPL-2.0"
+categories = ["wireless"]
+tier = 1
+nixpkgs = "wifite2"
+capabilities = ["net-admin"]
+
+[wireshark]
+upstream = "https://gitlab.com/wireshark/wireshark"
+description = "Network protocol analyser."
+license = "GPL-2.0"
+categories = ["network", "forensics"]
+tier = 1
+nixpkgs = "wireshark"
+capabilities = ["packet-capture"]
+
+[wpscan]
+upstream = "https://github.com/wpscanteam/wpscan"
+description = "WordPress security scanner."
+license = "unfree"
+categories = ["web"]
+tier = 1
+nixpkgs = "wpscan"
+notes = "Source-available but restricted for commercial use; check before shipping."

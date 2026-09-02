@@ -1,0 +1,10 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[impacket]
+upstream = "https://github.com/fortra/impacket"
+description = "Python classes and example scripts for network protocols."
+license = "Apache-1.1"
+categories = ["active-directory", "network", "exploitation"]
+tier = 1
+nixpkgs = "python3Packages.impacket"

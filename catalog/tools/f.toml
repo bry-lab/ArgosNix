@@ -1,0 +1,67 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[feroxbuster]
+upstream = "https://github.com/epi052/feroxbuster"
+description = "Recursive content discovery."
+license = "MIT"
+categories = ["web"]
+tier = 1
+nixpkgs = "feroxbuster"
+
+[ffuf]
+upstream = "https://github.com/ffuf/ffuf"
+description = "Fast web fuzzer."
+license = "MIT"
+categories = ["web"]
+tier = 1
+nixpkgs = "ffuf"
+
+[fierce]
+upstream = "https://github.com/mschwager/fierce"
+description = "DNS reconnaissance for non-contiguous IP space."
+license = "GPL-3.0"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "fierce"
+
+[flameshot]
+upstream = "https://github.com/flameshot-org/flameshot"
+description = "Screenshot tool with annotation."
+license = "GPL-3.0"
+categories = ["reporting"]
+tier = 1
+nixpkgs = "flameshot"
+
+[flare-floss]
+upstream = "https://github.com/mandiant/flare-floss"
+description = "Automatically extract obfuscated strings."
+license = "Apache-2.0"
+categories = ["malware-analysis"]
+tier = 1
+nixpkgs = "flare-floss"
+
+[flipperzero-cli]
+upstream = "https://github.com/flipperdevices/flipperzero-firmware"
+description = "Flipper Zero firmware and CLI tooling."
+license = "GPL-3.0"
+categories = ["radio"]
+tier = 3
+builder = "other"
+capabilities = ["usb"]
+
+[foremost]
+upstream = "https://sourceforge.net/projects/foremost"
+description = "File carving by header and footer signatures."
+license = "Public Domain"
+categories = ["forensics"]
+tier = 1
+nixpkgs = "foremost"
+
+[frida]
+upstream = "https://github.com/frida/frida"
+description = "Dynamic instrumentation toolkit."
+license = "wxWindows"
+categories = ["mobile", "reverse-engineering"]
+tier = 1
+nixpkgs = "frida-tools"

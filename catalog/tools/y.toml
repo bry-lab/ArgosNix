@@ -1,0 +1,10 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[yara]
+upstream = "https://github.com/VirusTotal/yara"
+description = "Pattern matching for malware identification."
+license = "BSD-3-Clause"
+categories = ["malware-analysis", "defense", "forensics"]
+tier = 1
+nixpkgs = "yara"

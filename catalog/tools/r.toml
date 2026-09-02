@@ -1,0 +1,85 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[radare2]
+upstream = "https://github.com/radareorg/radare2"
+description = "Reverse engineering framework."
+license = "LGPL-3.0"
+categories = ["reverse-engineering"]
+tier = 1
+nixpkgs = "radare2"
+
+[reaver]
+upstream = "https://github.com/t6x/reaver-wps-fork-t6x"
+description = "WPS PIN brute force."
+license = "GPL-2.0"
+categories = ["wireless"]
+tier = 1
+nixpkgs = "reaverwps"
+capabilities = ["net-admin"]
+
+[recon-ng]
+upstream = "https://github.com/lanmaster53/recon-ng"
+description = "Modular web reconnaissance framework."
+license = "GPL-3.0"
+categories = ["osint", "recon"]
+tier = 1
+nixpkgs = "recon-ng"
+
+[responder]
+upstream = "https://github.com/lgandx/Responder"
+description = "LLMNR/NBT-NS/MDNS poisoner and credential capture."
+license = "GPL-3.0"
+categories = ["network", "active-directory", "passwords"]
+tier = 1
+nixpkgs = "responder"
+capabilities = ["raw-socket"]
+
+[ripgrep]
+upstream = "https://github.com/BurntSushi/ripgrep"
+description = "Fast recursive search."
+license = "MIT"
+categories = ["utilities"]
+tier = 1
+nixpkgs = "ripgrep"
+
+[rizin]
+upstream = "https://github.com/rizinorg/rizin"
+description = "Fork of radare2 focused on usability."
+license = "LGPL-3.0"
+categories = ["reverse-engineering"]
+tier = 1
+nixpkgs = "rizin"
+
+[rockyou]
+upstream = "https://github.com/praetorian-inc/rockyou"
+description = "The rockyou password corpus."
+license = "Public Domain"
+categories = ["wordlists", "passwords"]
+tier = 3
+notes = "Ships inside seclists; a standalone entry exists only so provenance from Kali's wordlists package has somewhere to land."
+
+[ropgadget]
+upstream = "https://github.com/JonathanSalwan/ROPgadget"
+description = "Find ROP gadgets in binaries."
+license = "BSD-3-Clause"
+categories = ["exploitation", "reverse-engineering"]
+tier = 1
+nixpkgs = "python3Packages.ropgadget"
+
+[rtl-sdr]
+upstream = "https://github.com/osmocom/rtl-sdr"
+description = "Driver and tools for RTL2832U SDR dongles."
+license = "GPL-2.0"
+categories = ["radio"]
+tier = 1
+nixpkgs = "rtl-sdr"
+capabilities = ["usb"]
+
+[rustscan]
+upstream = "https://github.com/bee-san/RustScan"
+description = "Fast port scanner that hands off to nmap."
+license = "GPL-3.0"
+categories = ["recon"]
+tier = 1
+nixpkgs = "rustscan"

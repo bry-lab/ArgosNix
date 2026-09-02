@@ -1,0 +1,43 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[aircrack-ng]
+upstream = "https://github.com/aircrack-ng/aircrack-ng"
+description = "802.11 monitoring, attack and WEP/WPA cracking suite."
+license = "GPL-2.0"
+categories = ["wireless", "passwords"]
+tier = 1
+nixpkgs = "aircrack-ng"
+capabilities = ["net-admin", "raw-socket"]
+
+[amass]
+upstream = "https://github.com/owasp-amass/amass"
+description = "In-depth attack surface mapping and asset discovery."
+license = "Apache-2.0"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "amass"
+
+[angr]
+upstream = "https://github.com/angr/angr"
+description = "Binary analysis and symbolic execution."
+license = "BSD-2-Clause"
+categories = ["reverse-engineering"]
+tier = 1
+nixpkgs = "python3Packages.angr"
+
+[apktool]
+upstream = "https://github.com/iBotPeaches/Apktool"
+description = "Reverse engineer Android APKs."
+license = "Apache-2.0"
+categories = ["mobile", "reverse-engineering"]
+tier = 1
+nixpkgs = "apktool"
+
+[autopsy]
+upstream = "https://github.com/sleuthkit/autopsy"
+description = "Graphical front end for The Sleuth Kit."
+license = "Apache-2.0"
+categories = ["forensics"]
+tier = 1
+nixpkgs = "autopsy"

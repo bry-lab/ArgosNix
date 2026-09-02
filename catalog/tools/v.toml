@@ -1,0 +1,19 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[viper]
+upstream = "https://github.com/viper-framework/viper"
+description = "Binary analysis and management framework."
+license = "BSD-3-Clause"
+categories = ["malware-analysis"]
+tier = 3
+builder = "python"
+status = "unmaintained"
+
+[volatility3]
+upstream = "https://github.com/volatilityfoundation/volatility3"
+description = "Memory forensics framework."
+license = "VolatilitySoftwareLicense"
+categories = ["forensics", "malware-analysis"]
+tier = 1
+nixpkgs = "volatility3"

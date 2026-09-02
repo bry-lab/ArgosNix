@@ -1,0 +1,54 @@
+name: nightly
+
+on:
+  schedule: [{ cron: "0 3 * * *" }]
+  workflow_dispatch:
+
+jobs:
+  full-build:
+    # Needs a self-hosted runner with real disk. A full profile does not build
+    # on a 14GB GitHub runner and never will. Attic or Hydra on a Hetzner box
+    # is the cheap answer; budget for a few hundred GB of storage.
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 720
+    steps:
+      - uses: actions/checkout@v4
+      - name: build everything, tolerate failures
+        run: |
+          nix-eval-jobs --flake .#packages.x86_64-linux --workers 8 \
+            > /tmp/jobs.json
+          nix-fast-build --flake .#packages.x86_64-linux \
+            --no-nom --skip-cached --option keep-going true \
+            --result-file /tmp/results.json || true
+      - name: report broken packages
+        run: |
+          python3 tools/ci/report_failures.py /tmp/results.json > /tmp/report.md
+          cat /tmp/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: push to cache
+        run: attic push arsenal /nix/store/* || true
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: refresh from upstream distros
+        run: |
+          PYTHONPATH=tools python3 -m arsenal.cli import blackarch
+          PYTHONPATH=tools python3 -m arsenal.cli import kali
+          PYTHONPATH=tools python3 -m arsenal.cli import remnux
+          PYTHONPATH=tools python3 -m arsenal.cli import athena
+          PYTHONPATH=tools python3 -m arsenal.cli coverage --write
+          PYTHONPATH=tools python3 -m arsenal.cli coverage --write --json
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/catalog-refresh
+          title: "catalog: refresh from upstream distributions"
+          commit-message: "catalog: automated refresh"
+          body: |
+            Automated import from BlackArch, Kali, REMnux and Athena.
+
+            Importers only fill blank fields and extend provenance -- they never
+            overwrite curation. Review the coverage diff, not every entry.
+          labels: automation

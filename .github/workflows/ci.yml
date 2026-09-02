@@ -1,0 +1,88 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  catalog:
+    # Deliberately does not need nix. Catalog correctness is the thing most PRs
+    # touch, and a 20-second check is the difference between contributors
+    # iterating and contributors giving up.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: validate
+        run: PYTHONPATH=tools python3 -m arsenal.cli validate
+      - name: catalog is formatted
+        run: |
+          PYTHONPATH=tools python3 -m arsenal.cli fmt
+          git diff --exit-code -- catalog/ \
+            || { echo "::error::run 'arsenal fmt' and commit the result"; exit 1; }
+      - name: profiles resolve
+        run: PYTHONPATH=tools python3 -m arsenal.cli profile
+      - name: unit tests
+        run: cd tools && python3 -m unittest discover tests
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/ruff-action@v3
+        with: { args: "check tools/" }
+
+  eval:
+    # Evaluation only -- no building. Catches renamed nixpkgs attributes and
+    # broken profile definitions in about a minute.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - run: nix flake check --no-build --all-systems
+      - name: every profile evaluates
+        run: |
+          for p in $(nix eval --raw .#lib.catalog.count >/dev/null && \
+                     PYTHONPATH=tools python3 -c \
+                     'import tomllib,pathlib;print(" ".join(tomllib.loads(pathlib.Path("catalog/profiles.toml").read_text())))'); do
+            echo "::group::$p"
+            nix eval --raw ".#devShells.x86_64-linux.$p.name"
+            echo "::endgroup::"
+          done
+
+  build:
+    # Real builds do not fit on GitHub runners once the catalog grows -- a full
+    # profile is tens of GB. This job builds only what a PR changed; the
+    # nightly job on the self-hosted builder does the rest.
+    runs-on: ubuntu-latest
+    needs: [catalog, eval]
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: cachix/install-nix-action@v30
+      - uses: cachix/cachix-action@v15
+        with:
+          name: arsenal
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          # Never push unfree binaries. Redistributing licensed software is how
+          # this repo gets a takedown notice.
+          pushFilter: "(burpsuite|maltego|nessus|obsidian)"
+      - name: build changed derivations
+        run: |
+          changed=$(git diff --name-only origin/${{ github.base_ref || 'main' }}... \
+            | grep '^pkgs/by-name/' | cut -d/ -f3 | sort -u || true)
+          [ -z "$changed" ] && { echo "no derivations changed"; exit 0; }
+          for pkg in $changed; do
+            echo "::group::$pkg"
+            nix build ".#$pkg" --print-build-logs
+            echo "::endgroup::"
+          done

@@ -1,0 +1,27 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[ettercap]
+upstream = "https://github.com/Ettercap/ettercap"
+description = "MITM and protocol dissection suite."
+license = "GPL-2.0"
+categories = ["network"]
+tier = 1
+nixpkgs = "ettercap"
+capabilities = ["raw-socket", "net-admin"]
+
+[exiftool]
+upstream = "https://github.com/exiftool/exiftool"
+description = "Read and write file metadata."
+license = "Artistic-1.0"
+categories = ["osint", "forensics"]
+tier = 1
+nixpkgs = "exiftool"
+
+[exploitdb]
+upstream = "https://github.com/offensive-security/exploitdb"
+description = "Exploit-DB archive and searchsploit."
+license = "GPL-2.0"
+categories = ["exploitation"]
+tier = 1
+nixpkgs = "exploitdb"

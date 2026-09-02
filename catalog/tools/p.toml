@@ -1,0 +1,83 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[pacu]
+upstream = "https://github.com/RhinoSecurityLabs/pacu"
+description = "AWS exploitation framework."
+license = "BSD-3-Clause"
+categories = ["cloud", "exploitation"]
+tier = 1
+nixpkgs = "pacu"
+
+[pandoc]
+upstream = "https://github.com/jgm/pandoc"
+description = "Universal document converter for report generation."
+license = "GPL-2.0"
+categories = ["reporting"]
+tier = 1
+nixpkgs = "pandoc"
+
+[payloadsallthethings]
+upstream = "https://github.com/swisskyrepo/PayloadsAllTheThings"
+description = "Payload and bypass reference collection."
+license = "MIT"
+categories = ["wordlists", "web"]
+tier = 2
+builder = "script"
+
+[phoneinfoga]
+upstream = "https://github.com/sundowndev/phoneinfoga"
+description = "Phone number OSINT."
+license = "GPL-3.0"
+categories = ["osint"]
+tier = 1
+nixpkgs = "phoneinfoga"
+
+[plaso]
+upstream = "https://github.com/log2timeline/plaso"
+description = "Super timeline generation from forensic artefacts."
+license = "Apache-2.0"
+categories = ["forensics"]
+tier = 2
+builder = "python"
+
+[prowler]
+upstream = "https://github.com/prowler-cloud/prowler"
+description = "Cloud security posture assessment."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "prowler"
+
+[proxmark3]
+upstream = "https://github.com/RfidResearchGroup/proxmark3"
+description = "RFID and NFC research platform client."
+license = "GPL-3.0"
+categories = ["radio"]
+tier = 1
+nixpkgs = "proxmark3"
+capabilities = ["usb"]
+
+[proxychains]
+upstream = "https://github.com/rofl0r/proxychains-ng"
+description = "Force TCP connections through a proxy."
+license = "GPL-2.0"
+categories = ["network", "utilities"]
+tier = 1
+nixpkgs = "proxychains-ng"
+
+[pwndbg]
+upstream = "https://github.com/pwndbg/pwndbg"
+description = "Exploit development plugin for gdb."
+license = "MIT"
+categories = ["reverse-engineering", "exploitation"]
+tier = 1
+nixpkgs = "pwndbg"
+
+[pwntools]
+upstream = "https://github.com/Gallopsled/pwntools"
+description = "CTF and exploit development library."
+license = "MIT"
+categories = ["exploitation", "reverse-engineering"]
+tier = 1
+nixpkgs = "python3Packages.pwntools"

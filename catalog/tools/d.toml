@@ -1,0 +1,35 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[dalfox]
+upstream = "https://github.com/hahwul/dalfox"
+description = "XSS scanning and parameter analysis."
+license = "MIT"
+categories = ["web"]
+tier = 1
+nixpkgs = "dalfox"
+
+[didier-stevens-suite]
+upstream = "https://github.com/DidierStevens/DidierStevensSuite"
+description = "pdf-parser, oledump and the rest of the Didier Stevens tools."
+license = "Public Domain"
+categories = ["malware-analysis", "forensics"]
+tier = 3
+builder = "script"
+notes = "Loose collection of scripts with no release process; needs a wrapper derivation that installs each entry point."
+
+[dnsenum]
+upstream = "https://github.com/fwaeytens/dnsenum"
+description = "DNS information gathering."
+license = "GPL-2.0"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "dnsenum"
+
+[dnsrecon]
+upstream = "https://github.com/darkoperator/dnsrecon"
+description = "DNS enumeration and zone transfer testing."
+license = "GPL-2.0"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "dnsrecon"

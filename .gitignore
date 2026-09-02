@@ -1,0 +1,7 @@
+result
+result-*
+.direnv/
+.cache/
+__pycache__/
+*.pyc
+.venv/

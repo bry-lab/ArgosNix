@@ -1,0 +1,19 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[zap]
+upstream = "https://github.com/zaproxy/zaproxy"
+description = "Intercepting proxy and web scanner."
+license = "Apache-2.0"
+categories = ["web"]
+tier = 1
+nixpkgs = "zap"
+
+[zeek]
+upstream = "https://github.com/zeek/zeek"
+description = "Network security monitoring and traffic analysis."
+license = "BSD-3-Clause"
+categories = ["defense", "network", "forensics"]
+tier = 1
+nixpkgs = "zeek"
+capabilities = ["packet-capture"]

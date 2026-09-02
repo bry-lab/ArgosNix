@@ -1,0 +1,27 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[objection]
+upstream = "https://github.com/sensepost/objection"
+description = "Runtime mobile exploration built on frida."
+license = "GPL-3.0"
+categories = ["mobile"]
+tier = 2
+builder = "python"
+
+[obsidian]
+upstream = "https://obsidian.md"
+description = "Markdown note taking, commonly used for engagement notes."
+license = "unfree"
+categories = ["reporting"]
+tier = 1
+nixpkgs = "obsidian"
+unfree = true
+
+[oletools]
+upstream = "https://github.com/decalage2/oletools"
+description = "Analyse OLE and MS Office documents for malicious content."
+license = "BSD-2-Clause"
+categories = ["malware-analysis"]
+tier = 1
+nixpkgs = "python3Packages.oletools"

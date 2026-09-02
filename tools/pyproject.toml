@@ -1,0 +1,23 @@
+[project]
+name = "nix-arsenal-tools"
+version = "0.1.0"
+description = "Catalog tooling for nix-arsenal"
+requires-python = ">=3.11"
+dependencies = []           # stdlib only, on purpose -- see arsenal/catalog.py
+
+[project.scripts]
+arsenal = "arsenal.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["arsenal*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

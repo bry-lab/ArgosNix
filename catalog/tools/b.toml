@@ -1,0 +1,44 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[bettercap]
+upstream = "https://github.com/bettercap/bettercap"
+description = "Network attack and monitoring framework."
+license = "GPL-3.0"
+categories = ["network", "wireless"]
+tier = 1
+nixpkgs = "bettercap"
+capabilities = ["raw-socket", "net-admin"]
+
+[binwalk]
+upstream = "https://github.com/ReFirmLabs/binwalk"
+description = "Firmware image analysis and extraction."
+license = "MIT"
+categories = ["reverse-engineering", "forensics", "radio"]
+tier = 1
+nixpkgs = "binwalk"
+
+[bloodhound]
+upstream = "https://github.com/SpecterOps/BloodHound"
+description = "Attack path analysis for AD and Entra ID."
+license = "GPL-3.0"
+categories = ["active-directory"]
+tier = 1
+nixpkgs = "bloodhound"
+
+[bulk-extractor]
+upstream = "https://github.com/simsong/bulk_extractor"
+description = "Extract features from disk images without parsing filesystems."
+license = "MIT"
+categories = ["forensics"]
+tier = 1
+nixpkgs = "bulk_extractor"
+
+[burpsuite]
+upstream = "https://portswigger.net/burp"
+description = "Web security testing platform."
+license = "unfree"
+categories = ["web"]
+tier = 4
+unfree = true
+notes = "Community edition is redistributable-ish; Pro is not. Ships via an unfree overlay, never pushed to the binary cache."

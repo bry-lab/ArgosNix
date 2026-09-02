@@ -1,0 +1,159 @@
+{
+  "capabilities": {
+    "net-admin": 9,
+    "packet-capture": 5,
+    "raw-socket": 8,
+    "usb": 4
+  },
+  "categories": {
+    "active-directory": {
+      "packaged": 6,
+      "percent": 85.7,
+      "tools": 7
+    },
+    "cloud": {
+      "packaged": 11,
+      "percent": 100.0,
+      "tools": 11
+    },
+    "crypto": {
+      "packaged": 9,
+      "percent": 100.0,
+      "tools": 9
+    },
+    "defense": {
+      "packaged": 10,
+      "percent": 90.9,
+      "tools": 11
+    },
+    "exploitation": {
+      "packaged": 8,
+      "percent": 100.0,
+      "tools": 8
+    },
+    "forensics": {
+      "packaged": 12,
+      "percent": 85.7,
+      "tools": 14
+    },
+    "malware-analysis": {
+      "packaged": 7,
+      "percent": 77.8,
+      "tools": 9
+    },
+    "mobile": {
+      "packaged": 3,
+      "percent": 60.0,
+      "tools": 5
+    },
+    "network": {
+      "packaged": 19,
+      "percent": 100.0,
+      "tools": 19
+    },
+    "osint": {
+      "packaged": 18,
+      "percent": 94.7,
+      "tools": 19
+    },
+    "passwords": {
+      "packaged": 16,
+      "percent": 88.9,
+      "tools": 18
+    },
+    "post-exploitation": {
+      "packaged": 5,
+      "percent": 83.3,
+      "tools": 6
+    },
+    "radio": {
+      "packaged": 5,
+      "percent": 83.3,
+      "tools": 6
+    },
+    "recon": {
+      "packaged": 21,
+      "percent": 100.0,
+      "tools": 21
+    },
+    "reporting": {
+      "packaged": 3,
+      "percent": 100.0,
+      "tools": 3
+    },
+    "reverse-engineering": {
+      "packaged": 14,
+      "percent": 100.0,
+      "tools": 14
+    },
+    "utilities": {
+      "packaged": 9,
+      "percent": 100.0,
+      "tools": 9
+    },
+    "web": {
+      "packaged": 18,
+      "percent": 90.0,
+      "tools": 20
+    },
+    "wireless": {
+      "packaged": 7,
+      "percent": 100.0,
+      "tools": 7
+    },
+    "wordlists": {
+      "packaged": 3,
+      "percent": 60.0,
+      "tools": 5
+    }
+  },
+  "distros": {
+    "athena": {
+      "packaged": 0,
+      "percent": 0.0,
+      "tools": 0
+    },
+    "blackarch": {
+      "packaged": 0,
+      "percent": 0.0,
+      "tools": 0
+    },
+    "kali": {
+      "packaged": 0,
+      "percent": 0.0,
+      "tools": 0
+    },
+    "remnux": {
+      "packaged": 0,
+      "percent": 0.0,
+      "tools": 0
+    }
+  },
+  "exclusivity": {
+    "athena": {
+      "percent": 0.0,
+      "unique": 0
+    },
+    "blackarch": {
+      "percent": 0.0,
+      "unique": 0
+    },
+    "kali": {
+      "percent": 0.0,
+      "unique": 0
+    },
+    "remnux": {
+      "percent": 0.0,
+      "unique": 0
+    }
+  },
+  "packaged": 123,
+  "percent": 89.8,
+  "tiers": {
+    "1": 123,
+    "2": 6,
+    "3": 5,
+    "4": 3
+  },
+  "total": 137
+}
