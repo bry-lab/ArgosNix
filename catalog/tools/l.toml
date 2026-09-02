@@ -1,0 +1,19 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[ldapdomaindump]
+upstream = "https://github.com/dirkjanm/ldapdomaindump"
+description = "Dump AD information over LDAP into readable formats."
+license = "MIT"
+categories = ["active-directory", "recon"]
+tier = 1
+nixpkgs = "python3Packages.ldapdomaindump"
+
+[ligolo-ng]
+upstream = "https://github.com/nicocha30/ligolo-ng"
+description = "Tunnelling and pivoting via a userland TUN."
+license = "GPL-3.0"
+categories = ["network", "post-exploitation"]
+tier = 1
+nixpkgs = "ligolo-ng"
+capabilities = ["net-admin"]

@@ -1,0 +1,70 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[naabu]
+upstream = "https://github.com/projectdiscovery/naabu"
+description = "Fast SYN/CONNECT port scanner."
+license = "MIT"
+categories = ["recon"]
+tier = 1
+nixpkgs = "naabu"
+capabilities = ["raw-socket"]
+
+[name-that-hash]
+upstream = "https://github.com/HashPals/Name-That-Hash"
+description = "Identify hash types."
+license = "GPL-3.0"
+categories = ["passwords"]
+tier = 2
+builder = "python"
+
+[ncrack]
+upstream = "https://github.com/nmap/ncrack"
+description = "High-speed network authentication cracker."
+license = "NPSL"
+categories = ["passwords"]
+tier = 1
+nixpkgs = "ncrack"
+
+[netcat]
+upstream = "https://salsa.debian.org/debian/netcat"
+description = "TCP/UDP swiss army knife."
+license = "GPL-2.0"
+categories = ["network", "utilities"]
+tier = 1
+nixpkgs = "netcat-gnu"
+
+[netexec]
+upstream = "https://github.com/Pennyw0rth/NetExec"
+description = "Network protocol swiss army knife for AD."
+license = "BSD-2-Clause"
+categories = ["active-directory", "network", "passwords"]
+tier = 1
+nixpkgs = "netexec"
+aliases = ["crackmapexec", "cme"]
+notes = "Renamed from crackmapexec in 2023; both names appear in old docs."
+
+[nikto]
+upstream = "https://github.com/sullo/nikto"
+description = "Web server misconfiguration scanner."
+license = "GPL-2.0"
+categories = ["web"]
+tier = 1
+nixpkgs = "nikto"
+
+[nmap]
+upstream = "https://github.com/nmap/nmap"
+description = "Network discovery and security auditing scanner."
+license = "NPSL"
+categories = ["recon", "network"]
+tier = 1
+nixpkgs = "nmap"
+capabilities = ["raw-socket"]
+
+[nuclei]
+upstream = "https://github.com/projectdiscovery/nuclei"
+description = "Template-driven vulnerability scanner."
+license = "MIT"
+categories = ["web", "recon"]
+tier = 1
+nixpkgs = "nuclei"

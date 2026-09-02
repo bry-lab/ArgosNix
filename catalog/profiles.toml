@@ -1,0 +1,87 @@
+# Profiles are the user-facing product. Categories are how we organise the
+# catalog; profiles are how someone actually starts a job.
+#
+# Rules of thumb:
+#   - a profile should be usable on its own -- no "you also need X" in the docs
+#   - prefer including a category over cherry-picking `extra` tools; if you find
+#     yourself listing eight extras, the taxonomy is wrong, fix that instead
+#   - keep `full` honest: it is genuinely enormous and slow, and that is fine,
+#     but do not let people stumble into it as a default
+#
+# Fields:
+#   categories  - taxonomy keys to include wholesale
+#   extra       - individual catalog ids to add
+#   exclude     - catalog ids to drop (usually huge or conflicting)
+#   tiers       - which tiers may contribute (default [1, 2, 3])
+#   unfree      - allow unfree packages in this profile
+#   description - one line, shown by `nix flake show` and the shell banner
+
+[osint]
+description = "Open-source intelligence: people, domains, orgs, breach data."
+categories = ["osint", "recon", "wordlists"]
+extra = ["exiftool", "jq", "ripgrep"]
+
+[webapp]
+description = "Web application and API assessment."
+categories = ["web", "recon", "passwords", "wordlists"]
+
+[network]
+description = "Internal network testing: capture, MITM, pivoting, protocol attacks."
+categories = ["network", "recon", "passwords"]
+
+[ad]
+description = "Active Directory and identity attack path work."
+categories = ["active-directory", "passwords", "network", "post-exploitation"]
+
+[wireless]
+description = "802.11, Bluetooth and link-layer wireless attacks."
+categories = ["wireless", "network"]
+
+[radio]
+description = "SDR, RFID/NFC, JTAG/UART and hardware hacking."
+categories = ["radio", "reverse-engineering"]
+
+[redteam]
+description = "Full offensive chain: recon through post-exploitation and C2."
+categories = [
+  "recon", "web", "network", "active-directory",
+  "exploitation", "post-exploitation", "passwords", "wordlists",
+]
+
+[malware]
+description = "Malware triage and analysis. The REMnux replacement."
+categories = ["malware-analysis", "reverse-engineering", "forensics"]
+
+[revuln]
+description = "Reverse engineering and exploit development."
+categories = ["reverse-engineering", "exploitation"]
+
+[dfir]
+description = "Digital forensics and incident response."
+categories = ["forensics", "malware-analysis", "defense"]
+
+[cloud]
+description = "Cloud, container and IaC security assessment."
+categories = ["cloud", "recon", "web"]
+
+[mobile]
+description = "Android and iOS application assessment."
+categories = ["mobile", "reverse-engineering", "web"]
+
+[crypto]
+description = "Cryptanalysis, TLS assessment and steganography."
+categories = ["crypto", "passwords"]
+
+[defense]
+description = "Detection engineering, hardening and threat hunting."
+categories = ["defense", "forensics", "reporting"]
+
+[ctf]
+description = "A broad, fast-building set for CTFs. Skips the multi-GB tools."
+categories = ["reverse-engineering", "crypto", "web", "exploitation", "wordlists"]
+exclude = ["ghidra", "metasploit", "burpsuite"]
+
+[full]
+description = "Everything free that builds. Very large. You probably want the ISO instead."
+categories = ["*"]
+tiers = [1, 2, 3]

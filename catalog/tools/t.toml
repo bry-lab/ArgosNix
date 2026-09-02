@@ -1,0 +1,75 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[tcpdump]
+upstream = "https://github.com/the-tcpdump-group/tcpdump"
+description = "Command line packet capture."
+license = "BSD-3-Clause"
+categories = ["network", "forensics"]
+tier = 1
+nixpkgs = "tcpdump"
+capabilities = ["packet-capture"]
+
+[testdisk]
+upstream = "https://www.cgsecurity.org/wiki/TestDisk"
+description = "Partition recovery and file undelete."
+license = "GPL-2.0"
+categories = ["forensics"]
+tier = 1
+nixpkgs = "testdisk"
+
+[testssl]
+upstream = "https://github.com/drwetter/testssl.sh"
+description = "TLS/SSL cipher and vulnerability testing."
+license = "GPL-2.0"
+categories = ["web", "crypto"]
+tier = 1
+nixpkgs = "testssl"
+
+[theharvester]
+upstream = "https://github.com/laramies/theHarvester"
+description = "Email, subdomain and name harvesting from public sources."
+license = "GPL-2.0"
+categories = ["osint", "recon"]
+tier = 1
+nixpkgs = "theharvester"
+
+[tmux]
+upstream = "https://github.com/tmux/tmux"
+description = "Terminal multiplexer."
+license = "ISC"
+categories = ["utilities"]
+tier = 1
+nixpkgs = "tmux"
+
+[tor]
+upstream = "https://gitlab.torproject.org/tpo/core/tor"
+description = "Onion routing client."
+license = "BSD-3-Clause"
+categories = ["network", "utilities"]
+tier = 1
+nixpkgs = "tor"
+
+[torsocks]
+upstream = "https://gitlab.torproject.org/tpo/core/torsocks"
+description = "Torify arbitrary applications."
+license = "GPL-2.0"
+categories = ["network", "utilities"]
+tier = 1
+nixpkgs = "torsocks"
+
+[trivy]
+upstream = "https://github.com/aquasecurity/trivy"
+description = "Container, filesystem and IaC vulnerability scanner."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "trivy"
+
+[trufflehog]
+upstream = "https://github.com/trufflesecurity/trufflehog"
+description = "Find and verify leaked credentials."
+license = "AGPL-3.0"
+categories = ["cloud", "recon", "osint"]
+tier = 1
+nixpkgs = "trufflehog"

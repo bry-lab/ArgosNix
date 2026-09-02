@@ -1,0 +1,5 @@
+loot/
+*.pcap
+*.kdbx
+.direnv/
+result

@@ -1,0 +1,68 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[gau]
+upstream = "https://github.com/lc/gau"
+description = "Fetch known URLs from multiple archive sources."
+license = "MIT"
+categories = ["web", "osint"]
+tier = 1
+nixpkgs = "gau"
+
+[gdb]
+upstream = "https://sourceware.org/gdb"
+description = "GNU debugger."
+license = "GPL-3.0"
+categories = ["reverse-engineering"]
+tier = 1
+nixpkgs = "gdb"
+
+[ghidra]
+upstream = "https://github.com/NationalSecurityAgency/ghidra"
+description = "Software reverse engineering suite with decompiler."
+license = "Apache-2.0"
+categories = ["reverse-engineering", "malware-analysis"]
+tier = 1
+nixpkgs = "ghidra"
+notes = "Multi-GB closure. Excluded from the ctf profile."
+
+[gitleaks]
+upstream = "https://github.com/gitleaks/gitleaks"
+description = "Detect secrets in git repositories."
+license = "MIT"
+categories = ["cloud", "recon"]
+tier = 1
+nixpkgs = "gitleaks"
+
+[gnuradio]
+upstream = "https://github.com/gnuradio/gnuradio"
+description = "Software-defined radio development toolkit."
+license = "GPL-3.0"
+categories = ["radio"]
+tier = 1
+nixpkgs = "gnuradio"
+
+[gobuster]
+upstream = "https://github.com/OJ/gobuster"
+description = "Directory, DNS and vhost brute forcing."
+license = "Apache-2.0"
+categories = ["web"]
+tier = 1
+nixpkgs = "gobuster"
+
+[gqrx]
+upstream = "https://github.com/gqrx-sdr/gqrx"
+description = "SDR receiver and spectrum analyser."
+license = "GPL-3.0"
+categories = ["radio"]
+tier = 1
+nixpkgs = "gqrx"
+capabilities = ["usb"]
+
+[grype]
+upstream = "https://github.com/anchore/grype"
+description = "Vulnerability scanner for container images."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "grype"

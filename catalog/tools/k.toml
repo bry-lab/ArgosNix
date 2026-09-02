@@ -1,0 +1,43 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[katana]
+upstream = "https://github.com/projectdiscovery/katana"
+description = "Crawling and spidering framework."
+license = "MIT"
+categories = ["web", "recon"]
+tier = 1
+nixpkgs = "katana"
+
+[kerbrute]
+upstream = "https://github.com/ropnop/kerbrute"
+description = "Kerberos pre-auth username and password enumeration."
+license = "Apache-2.0"
+categories = ["active-directory", "passwords"]
+tier = 1
+nixpkgs = "kerbrute"
+
+[kismet]
+upstream = "https://github.com/kismetwireless/kismet"
+description = "Wireless network detector and sniffer."
+license = "GPL-2.0"
+categories = ["wireless", "recon"]
+tier = 1
+nixpkgs = "kismet"
+capabilities = ["net-admin", "packet-capture"]
+
+[kube-bench]
+upstream = "https://github.com/aquasecurity/kube-bench"
+description = "CIS benchmark checks for Kubernetes."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "kube-bench"
+
+[kube-hunter]
+upstream = "https://github.com/aquasecurity/kube-hunter"
+description = "Kubernetes penetration testing."
+license = "Apache-2.0"
+categories = ["cloud"]
+tier = 1
+nixpkgs = "kube-hunter"

@@ -1,0 +1,147 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[scoutsuite]
+upstream = "https://github.com/nccgroup/ScoutSuite"
+description = "Multi-cloud security auditing."
+license = "GPL-2.0"
+categories = ["cloud"]
+tier = 1
+nixpkgs = "scoutsuite"
+
+[seclists]
+upstream = "https://github.com/danielmiessler/SecLists"
+description = "Collection of wordlists, payloads and fuzzing corpora."
+license = "MIT"
+categories = ["wordlists", "web", "passwords"]
+tier = 1
+nixpkgs = "seclists"
+
+[sherlock]
+upstream = "https://github.com/sherlock-project/sherlock"
+description = "Find usernames across social networks."
+license = "MIT"
+categories = ["osint"]
+tier = 1
+nixpkgs = "sherlock"
+
+[shodan-cli]
+upstream = "https://github.com/achillean/shodan-python"
+description = "Shodan API command line client."
+license = "MIT"
+categories = ["osint", "recon"]
+tier = 1
+nixpkgs = "python3Packages.shodan"
+
+[sigma-cli]
+upstream = "https://github.com/SigmaHQ/sigma-cli"
+description = "Convert Sigma detection rules to SIEM queries."
+license = "LGPL-2.1"
+categories = ["defense"]
+tier = 2
+builder = "python"
+
+[sleuthkit]
+upstream = "https://github.com/sleuthkit/sleuthkit"
+description = "Filesystem and disk image forensic analysis."
+license = "IPL-1.0"
+categories = ["forensics"]
+tier = 1
+nixpkgs = "sleuthkit"
+
+[sliver]
+upstream = "https://github.com/BishopFox/sliver"
+description = "Cross-platform adversary emulation and C2 framework."
+license = "GPL-3.0"
+categories = ["post-exploitation"]
+tier = 1
+nixpkgs = "sliver"
+
+[socat]
+upstream = "http://www.dest-unreach.org/socat"
+description = "Bidirectional data relay."
+license = "GPL-2.0"
+categories = ["network", "utilities"]
+tier = 1
+nixpkgs = "socat"
+
+[spiderfoot]
+upstream = "https://github.com/smicallef/spiderfoot"
+description = "Automated OSINT collection and correlation."
+license = "MIT"
+categories = ["osint", "recon"]
+tier = 1
+nixpkgs = "spiderfoot"
+
+[sqlmap]
+upstream = "https://github.com/sqlmapproject/sqlmap"
+description = "Automatic SQL injection and database takeover."
+license = "GPL-2.0"
+categories = ["web", "exploitation"]
+tier = 1
+nixpkgs = "sqlmap"
+
+[sshuttle]
+upstream = "https://github.com/sshuttle/sshuttle"
+description = "Transparent VPN over SSH."
+license = "LGPL-2.1"
+categories = ["network", "post-exploitation"]
+tier = 1
+nixpkgs = "sshuttle"
+
+[sslscan]
+upstream = "https://github.com/rbsec/sslscan"
+description = "TLS/SSL configuration scanner."
+license = "GPL-3.0"
+categories = ["web", "crypto"]
+tier = 1
+nixpkgs = "sslscan"
+
+[sslyze]
+upstream = "https://github.com/nabla-c0d3/sslyze"
+description = "Fast TLS configuration analyser."
+license = "AGPL-3.0"
+categories = ["web", "crypto"]
+tier = 1
+nixpkgs = "sslyze"
+
+[steghide]
+upstream = "https://sourceforge.net/projects/steghide"
+description = "Hide data in image and audio files."
+license = "GPL-2.0"
+categories = ["crypto"]
+tier = 1
+nixpkgs = "steghide"
+
+[stegseek]
+upstream = "https://github.com/RickdeJager/stegseek"
+description = "Fast steghide cracker."
+license = "MIT"
+categories = ["crypto", "passwords"]
+tier = 1
+nixpkgs = "stegseek"
+
+[subfinder]
+upstream = "https://github.com/projectdiscovery/subfinder"
+description = "Passive subdomain enumeration."
+license = "MIT"
+categories = ["recon", "osint"]
+tier = 1
+nixpkgs = "subfinder"
+
+[suricata]
+upstream = "https://github.com/OISF/suricata"
+description = "Network IDS, IPS and monitoring engine."
+license = "GPL-2.0"
+categories = ["defense", "network"]
+tier = 1
+nixpkgs = "suricata"
+capabilities = ["packet-capture", "net-admin"]
+
+[syft]
+upstream = "https://github.com/anchore/syft"
+description = "SBOM generation for images and filesystems."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "syft"

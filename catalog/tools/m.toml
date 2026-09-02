@@ -1,0 +1,61 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[maigret]
+upstream = "https://github.com/soxoj/maigret"
+description = "Username enumeration across thousands of sites."
+license = "MIT"
+categories = ["osint"]
+tier = 1
+nixpkgs = "maigret"
+
+[maltego]
+upstream = "https://www.maltego.com"
+description = "Link analysis and OSINT graphing."
+license = "unfree"
+categories = ["osint"]
+tier = 4
+unfree = true
+notes = "Community edition requires registration; not redistributable."
+
+[masscan]
+upstream = "https://github.com/robertdavidgraham/masscan"
+description = "Internet-scale TCP port scanner."
+license = "AGPL-3.0"
+categories = ["recon"]
+tier = 1
+nixpkgs = "masscan"
+capabilities = ["raw-socket"]
+
+[medusa]
+upstream = "https://github.com/jmk-foofus/medusa"
+description = "Parallel network login brute forcer."
+license = "GPL-2.0"
+categories = ["passwords"]
+tier = 1
+nixpkgs = "medusa"
+
+[metasploit]
+upstream = "https://github.com/rapid7/metasploit-framework"
+description = "Exploit development and delivery framework."
+license = "BSD-3-Clause"
+categories = ["exploitation", "post-exploitation"]
+tier = 1
+nixpkgs = "metasploit"
+
+[mitmproxy]
+upstream = "https://github.com/mitmproxy/mitmproxy"
+description = "Interactive TLS-capable intercepting proxy."
+license = "MIT"
+categories = ["web", "network"]
+tier = 1
+nixpkgs = "mitmproxy"
+
+[mobsf]
+upstream = "https://github.com/MobSF/Mobile-Security-Framework-MobSF"
+description = "Automated mobile application security assessment."
+license = "GPL-3.0"
+categories = ["mobile"]
+tier = 3
+builder = "python"
+notes = "Django app with pinned deps and bundled binaries; realistically an OCI image rather than a derivation."

@@ -1,0 +1,26 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[jadx]
+upstream = "https://github.com/skylot/jadx"
+description = "Dex to Java decompiler."
+license = "Apache-2.0"
+categories = ["mobile", "reverse-engineering"]
+tier = 1
+nixpkgs = "jadx"
+
+[john]
+upstream = "https://github.com/openwall/john"
+description = "John the Ripper password cracker."
+license = "GPL-2.0"
+categories = ["passwords", "crypto"]
+tier = 1
+nixpkgs = "john"
+
+[jq]
+upstream = "https://github.com/jqlang/jq"
+description = "Command line JSON processor."
+license = "MIT"
+categories = ["utilities"]
+tier = 1
+nixpkgs = "jq"

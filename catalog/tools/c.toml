@@ -1,0 +1,83 @@
+# Generated and maintained by `arsenal` -- see tools/README.md.
+# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+
+[capa]
+upstream = "https://github.com/mandiant/capa"
+description = "Identify capabilities in executable files."
+license = "Apache-2.0"
+categories = ["malware-analysis", "reverse-engineering"]
+tier = 1
+nixpkgs = "capa"
+
+[certipy]
+upstream = "https://github.com/ly4k/Certipy"
+description = "AD Certificate Services enumeration and abuse."
+license = "MIT"
+categories = ["active-directory"]
+tier = 2
+builder = "python"
+
+[cewl]
+upstream = "https://github.com/digininja/CeWL"
+description = "Generate wordlists by spidering a site."
+license = "GPL-2.0"
+categories = ["passwords", "wordlists"]
+tier = 1
+nixpkgs = "cewl"
+
+[checkov]
+upstream = "https://github.com/bridgecrewio/checkov"
+description = "Static analysis for infrastructure as code."
+license = "Apache-2.0"
+categories = ["cloud", "defense"]
+tier = 1
+nixpkgs = "checkov"
+
+[chisel]
+upstream = "https://github.com/jpillora/chisel"
+description = "TCP/UDP tunnel over HTTP."
+license = "MIT"
+categories = ["network", "post-exploitation"]
+tier = 1
+nixpkgs = "chisel"
+
+[clamav]
+upstream = "https://github.com/Cisco-Talos/clamav"
+description = "Antivirus engine and signature tooling."
+license = "GPL-2.0"
+categories = ["malware-analysis", "defense"]
+tier = 1
+nixpkgs = "clamav"
+
+[cobaltstrike]
+upstream = "https://www.cobaltstrike.com"
+description = "Commercial adversary simulation platform."
+license = "unfree"
+categories = ["post-exploitation"]
+tier = 4
+unfree = true
+notes = "Licensed per-seat. Never packageable; documented for parity only."
+
+[crunch]
+upstream = "https://sourceforge.net/projects/crunch-wordlist"
+description = "Wordlist generator from character sets and patterns."
+license = "GPL-2.0"
+categories = ["passwords", "wordlists"]
+tier = 1
+nixpkgs = "crunch"
+
+[cutter]
+upstream = "https://github.com/rizinorg/cutter"
+description = "GUI for rizin."
+license = "GPL-3.0"
+categories = ["reverse-engineering"]
+tier = 1
+nixpkgs = "cutter"
+
+[cyberchef]
+upstream = "https://github.com/gchq/CyberChef"
+description = "Data transformation and analysis workbench."
+license = "Apache-2.0"
+categories = ["crypto", "utilities"]
+tier = 1
+nixpkgs = "cyberchef"
