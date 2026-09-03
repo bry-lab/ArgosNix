@@ -4,19 +4,6 @@
 
 **123 of 137 catalogued tools (89.8%) resolve to a Nix package.**
 
-## By source distribution
-
-| Distro | Tools | Packaged | Coverage | Unique to it |
-| --- | ---: | ---: | ---: | ---: |
-| kali | 0 | 0 | 0.0% | 0 (0.0%) |
-| blackarch | 0 | 0 | 0.0% | 0 (0.0%) |
-| remnux | 0 | 0 | 0.0% | 0 (0.0%) |
-| athena | 0 | 0 | 0.0% | 0 (0.0%) |
-
-> All zero because no importer has run yet -- provenance is populated by
-> `arsenal import <distro>`, not by hand. Until then the catalog is just
-> the hand-curated seed set and these numbers mean nothing.
-
 ## By tier
 
 | Tier | Meaning | Tools |

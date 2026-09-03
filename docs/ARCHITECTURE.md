@@ -6,9 +6,9 @@
 
 The alternative — hand-written package lists in `.nix` files — works fine for a
 few hundred packages and collapses entirely at three thousand. You cannot
-diff it, you cannot compute coverage against Kali from it, you cannot let a
-scraper maintain it, and every tool that appears in four categories appears in
-four lists that immediately drift.
+diff it, you cannot compute coverage from it, you cannot let a scraper maintain
+it, and every tool that appears in four categories appears in four lists that
+immediately drift.
 
 So: `catalog/tools/*.toml` is the source of truth. `nix/catalog.nix` reads it
 with `builtins.fromTOML`. No code generation step, no checked-in generated Nix,
@@ -19,10 +19,11 @@ tooling and the evaluator.
 
 This is the second-most-important decision and the one people get wrong.
 
-Package names diverge across distros constantly. `crackmapexec` became
-`netexec`. Kali's `dirbuster` is not BlackArch's. REMnux ships things under
-names that exist nowhere else. Deduplicating on name produces a catalog with
-hundreds of accidental duplicates and hundreds of accidental merges.
+Package names diverge across ecosystems constantly. `crackmapexec` became
+`netexec`. The same tool ships under different names in different places, and
+different tools ship under the same name. Deduplicating on name produces a
+catalog with hundreds of accidental duplicates and hundreds of accidental
+merges.
 
 What does not diverge is where the code lives. So identity is the normalised
 upstream URL (`tools/arsenal/identity.py`), and every importer's job is to
@@ -48,38 +49,32 @@ Tier 2 is where the throughput is, because most modern security tooling is Go or
 Python. Tier 4 exists so the coverage number stays honest: pretending Burp Pro
 is a packaging backlog item rather than a licensing wall helps nobody.
 
-`arsenal missing` sorts the backlog by how many source distros ship a tool.
-Something in three distros is worth an afternoon; something in one usually is
-not.
+`arsenal missing` sorts the backlog by how many upstream sources ship a tool.
+Something shipped in three places is worth an afternoon; something in one usually
+is not.
 
-## Importers
+## Sources
 
-Four scrapers, run in descending order of metadata quality:
+The catalog is fed by scrapers, not typed by hand. Each source is an upstream
+package repository or security tool collection, and they run in descending order
+of metadata quality — the source with machine-readable URLs, licences and groups
+wins on any field where two disagree. The richest sources seed the taxonomy; the
+poorest are kept anyway, because their unique-tool rate is highest and their
+coverage barely overlaps the others.
 
-1. **BlackArch** — PKGBUILDs with machine-readable `url=`, `license=`, `groups=`.
-   The best source by a wide margin; ~2,800 packages and their groups are
-   already a usable taxonomy. Shallow clone, regex parse. We never execute a
-   PKGBUILD.
-2. **Kali** — one APT index gives package names, `Homepage:`, and the dependency
-   sets of the `kali-tools-*` metapackages. Those metapackages are Kali's
-   curated taxonomy and it is cleaner than BlackArch's, so it wins on category
-   assignment where the two disagree.
-3. **REMnux** — SaltStack states. Worst metadata, highest unique-tool rate:
-   its malware and document-analysis coverage barely overlaps the others.
-4. **Athena** — pacman repo database. Mostly re-exports BlackArch, so this
-   should produce mostly merges. A high add-rate here means the BlackArch import
-   failed.
+Scraping is read-only: a shallow clone or index fetch and a parse. A build script
+is never executed.
 
-The invariant that makes re-running safe: **importers may only fill blank fields
+The invariant that makes re-running safe: **a source may only fill blank fields
 and extend provenance.** Hand curation always wins. That lives in
 `Catalog.upsert` and must not be weakened.
 
 ## Taxonomy
 
-Ours, not any distro's. BlackArch's ~50 groups are noisy and put tools in five
-groups at once; Kali's ~20 metapackages are cleaner but shaped around their
-menu. `catalog/taxonomy.toml` defines ~20 categories and maps upstream groups
-into them, capped at three per tool.
+Ours, not borrowed. Upstream group schemes are noisy — some put a tool in five
+groups at once; others are cleaner but shaped around a specific menu.
+`catalog/taxonomy.toml` defines ~20 categories and maps upstream groups into
+them, capped at three per tool.
 
 ## Profiles
 

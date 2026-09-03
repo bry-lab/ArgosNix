@@ -1,7 +1,7 @@
 # nix-arsenal
 
-The tooling from Kali, BlackArch, REMnux and Athena OS — deduplicated into one
-catalog, organised by what you are actually trying to do, and delivered as Nix
+A curated catalog of security tooling — deduplicated by where the code actually
+lives, organised by what you are actually trying to do, and delivered as Nix
 profiles you can install anywhere, pin per engagement, and rebuild byte-for-byte
 in two years.
 
@@ -13,10 +13,11 @@ nix build github:OWNER/nix-arsenal#iso          # a live system, not just a shel
 
 ## Why this exists
 
-Four distributions, ~3,000 unique tools between them, and enormous overlap. If
-you do OSINT and malware analysis you run two operating systems. If you want a
-reproducible toolset for an engagement you are pinning a rolling release and
-hoping. If you want to add three tools to Kali you are maintaining a Dockerfile.
+Security tooling is scattered across ecosystems, heavily duplicated, and hard to
+reproduce. Covering two specialisms — say OSINT and malware analysis — usually
+means running two operating systems. A reproducible toolset for an engagement
+means pinning a rolling release and hoping. Adding a few tools of your own means
+maintaining a Dockerfile.
 
 Nix fixes all three problems, and the packaging was the only thing standing in
 the way. So the catalog is the project. The flake is a thin generator over it.
@@ -26,18 +27,17 @@ the way. So the catalog is the project. The flake is a thin generator over it.
 This is honest about what it is. See [docs/COVERAGE.md](docs/COVERAGE.md), which
 is regenerated nightly:
 
-- Every tool in the catalog is mapped to its upstream and its source distros.
-  **That mapping did not previously exist anywhere and is useful on its own.**
-- Roughly a quarter of the union is already in nixpkgs and works today.
-- The rest is a packaging backlog, tiered by difficulty and prioritised by how
-  many distros ship it. `arsenal missing --tier 2` is the contributor queue.
+- Every tool in the catalog is mapped to its upstream and deduplicated by where
+  the code lives. **That mapping is useful on its own.**
+- Roughly a quarter of the catalog is already in nixpkgs and works today.
+- The rest is a packaging backlog, tiered by difficulty. `arsenal missing --tier 2`
+  is the contributor queue.
 - Some tools will never be here: Burp Pro, Cobalt Strike, Nessus and friends are
   licensed and not redistributable. They are catalogued as tier 4 with a note,
   so the coverage number stays honest.
 
-**It does not fully replace Kali or REMnux today.** It replaces them for
-specific profiles now and more of them each month, and unlike those distros you
-can see exactly what is missing.
+**It is not complete today.** It is production-ready for specific profiles now
+and more of them each month, and you can always see exactly what is missing.
 
 ## How it is organised
 

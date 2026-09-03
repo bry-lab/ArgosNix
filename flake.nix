@@ -1,5 +1,5 @@
 {
-  description = "A Nix-native security toolset: Kali, BlackArch, REMnux and Athena, deduplicated into one catalog";
+  description = "Argos: a Nix-native, catalog-driven security toolkit for Linux";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -155,7 +155,7 @@
       };
 
       # A bootable reference system per Linux architecture. This is what people
-      # mean when they say "replace Kali" -- a shell full of binaries is not a
+      # mean by a real security distro -- a shell full of binaries is not a
       # substitute for a live ISO with working monitor mode.
       nixosConfigurations = lib.listToAttrs (map
         (system: lib.nameValuePair "arsenal-${system}" (nixpkgs.lib.nixosSystem {

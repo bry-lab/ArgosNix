@@ -1,8 +1,8 @@
 # Build a devShell for a profile.
 #
-# The banner is not decoration. Two things reliably confuse people coming from
-# Kali: tools that are in the catalog but not yet packaged, and tools that are
-# installed but cannot do their job because a devShell cannot grant CAP_NET_RAW.
+# The banner is not decoration. Two things reliably confuse people: tools that
+# are in the catalog but not yet packaged, and tools that are installed but
+# cannot do their job because a devShell cannot grant CAP_NET_RAW.
 # Both get said out loud, every time, rather than buried in a doc nobody reads.
 { lib, pkgs, catalog, profiles }:
 
