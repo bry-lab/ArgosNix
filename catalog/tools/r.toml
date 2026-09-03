@@ -57,7 +57,7 @@ description = "The rockyou password corpus."
 license = "Public Domain"
 categories = ["wordlists", "passwords"]
 tier = 3
-notes = "Ships inside seclists; a standalone entry exists only so provenance from Kali's wordlists package has somewhere to land."
+notes = "Ships inside seclists; a standalone entry exists only so upstream wordlist-package provenance has somewhere to land."
 
 [ropgadget]
 upstream = "https://github.com/JonathanSalwan/ROPgadget"

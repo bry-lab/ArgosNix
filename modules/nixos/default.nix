@@ -3,8 +3,8 @@
 # This is where nix-arsenal stops being a package list and starts being a
 # credible distro replacement. A devShell can put nmap on your PATH; it cannot
 # give it CAP_NET_RAW, load an mac80211 monitor-mode driver, or write a udev
-# rule so your Proxmark is readable without sudo. Kali's real value was never
-# the package selection -- it was that all of that was already done.
+# rule so your Proxmark is readable without sudo. A security distro's real value
+# was never the package selection -- it was that all of that was already done.
 #
 # Everything here is derived from the catalog's `capabilities` field, so adding
 # a tool that needs raw sockets is a one-line catalog edit, not a module edit.

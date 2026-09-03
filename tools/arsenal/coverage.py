@@ -1,8 +1,11 @@
 """Coverage reporting.
 
 This is the project's most useful artefact long before any packaging happens.
-"We cover 63% of BlackArch and 91% of Kali" is a recruiting tool, a roadmap and
-an honest answer to "can this replace my distro?" all at once. Publish it.
+A per-category coverage number is a recruiting tool, a roadmap and an honest
+answer to "can this replace my distro?" all at once. Publish it.
+
+Per-source provenance is still computed (see `compute`) and lands in the JSON
+report for internal use, but it is not rendered into the public Markdown.
 """
 
 from __future__ import annotations
@@ -79,26 +82,7 @@ def to_markdown(report: dict, taxonomy: Taxonomy) -> str:
         "",
         f"**{report['packaged']} of {report['total']} catalogued tools "
         f"({report['percent']}%) resolve to a Nix package.**",
-        "",
-        "## By source distribution",
-        "",
-        "| Distro | Tools | Packaged | Coverage | Unique to it |",
-        "| --- | ---: | ---: | ---: | ---: |",
     ]
-    for distro, row in report["distros"].items():
-        uniq = report["exclusivity"][distro]
-        lines.append(
-            f"| {distro} | {row['tools']} | {row['packaged']} | "
-            f"{row['percent']}% | {uniq['unique']} ({uniq['percent']}%) |"
-        )
-
-    if all(row["tools"] == 0 for row in report["distros"].values()):
-        lines += [
-            "",
-            "> All zero because no importer has run yet -- provenance is populated by",
-            "> `arsenal import <distro>`, not by hand. Until then the catalog is just",
-            "> the hand-curated seed set and these numbers mean nothing.",
-        ]
 
     lines += ["", "## By tier", "", "| Tier | Meaning | Tools |", "| --- | --- | ---: |"]
     for tier, label in TIER_LABEL.items():

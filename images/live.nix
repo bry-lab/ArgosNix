@@ -7,9 +7,9 @@
 #     data across jobs is a breach waiting to happen; if you want persistence,
 #     mount it explicitly at /loot.
 #
-#   * No default password of "kali". The live user has no password and no
-#     remote login path; sudo is passwordless *from console only*. This is the
-#     same posture as a live CD but without the well-known credential.
+#   * No default password. The live user has no password and no remote login
+#     path; sudo is passwordless *from console only*. This is the same posture
+#     as a live CD but without a shipped default login.
 #
 #   * Profiles are a parameter, not a fixed set. A full-everything ISO is
 #     20GB+ and takes an hour to build. Build the one you need:

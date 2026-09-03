@@ -49,7 +49,7 @@ categories = [
 ]
 
 [malware]
-description = "Malware triage and analysis. The REMnux replacement."
+description = "Malware triage and analysis: unpacking, document and PDF analysis, sandboxed detonation."
 categories = ["malware-analysis", "reverse-engineering", "forensics"]
 
 [revuln]
