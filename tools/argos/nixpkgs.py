@@ -2,7 +2,7 @@
 
 `nix search` is the source of truth rather than a hardcoded list, because
 attribute names churn (crackmapexec -> netexec was a rename in both nixpkgs and
-upstream). Running `arsenal verify` in CI is what stops the catalog rotting.
+upstream). Running `argos verify` in CI is what stops the catalog rotting.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ def search_index(flake: str = "nixpkgs") -> dict[str, dict]:
             check=True, capture_output=True, text=True,
         )
     except FileNotFoundError as exc:
-        raise RuntimeError("nix is not on PATH; `arsenal verify` needs it") from exc
+        raise RuntimeError("nix is not on PATH; `argos verify` needs it") from exc
     raw = json.loads(proc.stdout or "{}")
     # keys look like legacyPackages.x86_64-linux.nmap
     return {k.split(".", 2)[-1]: v for k, v in raw.items()}

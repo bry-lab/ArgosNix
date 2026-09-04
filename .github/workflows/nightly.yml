@@ -25,7 +25,7 @@ jobs:
           python3 tools/ci/report_failures.py /tmp/results.json > /tmp/report.md
           cat /tmp/report.md >> "$GITHUB_STEP_SUMMARY"
       - name: push to cache
-        run: attic push arsenal /nix/store/* || true
+        run: attic push argos /nix/store/* || true
 
   coverage:
     runs-on: ubuntu-latest
@@ -35,12 +35,12 @@ jobs:
         with: { python-version: "3.12" }
       - name: refresh from upstream distros
         run: |
-          PYTHONPATH=tools python3 -m arsenal.cli import blackarch
-          PYTHONPATH=tools python3 -m arsenal.cli import kali
-          PYTHONPATH=tools python3 -m arsenal.cli import remnux
-          PYTHONPATH=tools python3 -m arsenal.cli import athena
-          PYTHONPATH=tools python3 -m arsenal.cli coverage --write
-          PYTHONPATH=tools python3 -m arsenal.cli coverage --write --json
+          PYTHONPATH=tools python3 -m argos.cli import blackarch
+          PYTHONPATH=tools python3 -m argos.cli import kali
+          PYTHONPATH=tools python3 -m argos.cli import remnux
+          PYTHONPATH=tools python3 -m argos.cli import athena
+          PYTHONPATH=tools python3 -m argos.cli coverage --write
+          PYTHONPATH=tools python3 -m argos.cli coverage --write --json
       - uses: peter-evans/create-pull-request@v7
         with:
           branch: automation/catalog-refresh

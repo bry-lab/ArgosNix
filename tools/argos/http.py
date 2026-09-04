@@ -9,7 +9,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-USER_AGENT = "nix-arsenal-importer/0.1 (+https://github.com/OWNER/nix-arsenal)"
+USER_AGENT = "argos-importer/0.1 (+https://github.com/bry-lab/ArgosNix)"
 CACHE = Path(".cache/http")
 RETRIES = 3
 BACKOFF = 2.0

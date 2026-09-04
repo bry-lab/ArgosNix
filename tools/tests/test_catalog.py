@@ -18,8 +18,8 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from arsenal.catalog import Catalog, Tool  # noqa: E402
-from arsenal.identity import normalise, shard_for, slugify  # noqa: E402
+from argos.catalog import Catalog, Tool  # noqa: E402
+from argos.identity import normalise, shard_for, slugify  # noqa: E402
 
 
 class TestIdentity(unittest.TestCase):

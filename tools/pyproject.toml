@@ -1,19 +1,19 @@
 [project]
-name = "nix-arsenal-tools"
+name = "argos-tools"
 version = "0.1.0"
-description = "Catalog tooling for nix-arsenal"
+description = "Catalog tooling for Argos"
 requires-python = ">=3.11"
-dependencies = []           # stdlib only, on purpose -- see arsenal/catalog.py
+dependencies = []           # stdlib only, on purpose -- see argos/catalog.py
 
 [project.scripts]
-arsenal = "arsenal.cli:main"
+argos = "argos.cli:main"
 
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["arsenal*"]
+include = ["argos*"]
 
 [tool.ruff]
 line-length = 100

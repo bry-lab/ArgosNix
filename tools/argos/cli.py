@@ -1,12 +1,12 @@
-"""`arsenal` -- catalog maintenance CLI.
+"""`argos` -- catalog maintenance CLI.
 
-    arsenal validate                 schema + referential integrity
-    arsenal import blackarch         populate the catalog from a distro
-    arsenal coverage --write         regenerate docs/COVERAGE.md
-    arsenal verify --promote         resolve entries against nixpkgs
-    arsenal profile dfir             what is in a profile, and what is missing
-    arsenal missing --tier 2         the packaging backlog, prioritised
-    arsenal new sometool             scaffold a catalog entry + derivation
+    argos validate                 schema + referential integrity
+    argos import <source>          populate the catalog from an upstream source
+    argos coverage --write         regenerate docs/COVERAGE.md
+    argos verify --promote         resolve entries against nixpkgs
+    argos profile dfir             what is in a profile, and what is missing
+    argos missing --tier 2         the packaging backlog, prioritised
+    argos new sometool             scaffold a catalog entry + derivation
 
 Run from the repo root.
 """
@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -31,7 +32,13 @@ def find_root(start: Path | None = None) -> Path:
     for candidate in [here, *here.parents]:
         if (candidate / "catalog" / "taxonomy.toml").is_file():
             return candidate
-    raise SystemExit("not inside a nix-arsenal repo (no catalog/taxonomy.toml found)")
+    # Fall back to a catalog bundled at build time, so `nix run .#argos` works
+    # from any directory, not only inside a checkout. A real checkout still wins
+    # (the walk above), so `argos coverage --write` and friends stay writable.
+    env = os.environ.get("ARGOS_ROOT")
+    if env and (Path(env) / "catalog" / "taxonomy.toml").is_file():
+        return Path(env)
+    raise SystemExit("not inside an Argos repo (no catalog/taxonomy.toml found)")
 
 
 # -- commands -------------------------------------------------------------
@@ -386,7 +393,7 @@ stdenvNoCC.mkDerivation rec {{
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="arsenal", description=__doc__)
+    parser = argparse.ArgumentParser(prog="argos", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("validate", help="schema and referential integrity").set_defaults(

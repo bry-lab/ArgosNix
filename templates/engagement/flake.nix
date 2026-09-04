@@ -9,18 +9,18 @@
   description = "Toolset for ENGAGEMENT-NAME";
 
   inputs = {
-    arsenal.url = "github:OWNER/nix-arsenal";
+    argos.url = "github:bry-lab/ArgosNix";
     # Pin to a revision, not a branch, once the engagement starts:
-    # arsenal.url = "github:OWNER/nix-arsenal/COMMIT_SHA";
-    nixpkgs.follows = "arsenal/nixpkgs";
+    # argos.url = "github:bry-lab/ArgosNix/COMMIT_SHA";
+    nixpkgs.follows = "argos/nixpkgs";
   };
 
-  outputs = { self, nixpkgs, arsenal }:
+  outputs = { self, nixpkgs, argos }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ arsenal.overlays.default ];
+        overlays = [ argos.overlays.default ];
       };
     in
     {
@@ -28,7 +28,7 @@
         name = "engagement";
 
         packages =
-          arsenal.lib.select pkgs [ "recon" "web" "active-directory" ]
+          argos.lib.select pkgs [ "recon" "web" "active-directory" ]
           ++ (with pkgs; [
             # Engagement-specific additions go here.
             jq
@@ -36,10 +36,10 @@
 
         shellHook = ''
           export ENGAGEMENT="ENGAGEMENT-NAME"
-          export ARSENAL_LOOT="$PWD/loot"
-          mkdir -p "$ARSENAL_LOOT" notes
+          export ARGOS_LOOT="$PWD/loot"
+          mkdir -p "$ARGOS_LOOT" notes
           echo "engagement shell: $ENGAGEMENT"
-          echo "toolset pinned at ${self.inputs.arsenal.rev or "dirty"}"
+          echo "toolset pinned at ${self.inputs.argos.rev or "dirty"}"
         '';
       };
     };

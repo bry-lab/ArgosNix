@@ -6,7 +6,7 @@
 #
 # Cost: evaluating a few thousand entries adds roughly a second to `nix flake
 # show`. Worth it. If it ever stops being worth it, the fix is a build-time
-# `arsenal export --json` behind an IFD, not hand-maintained Nix lists.
+# `argos export --json` behind an IFD, not hand-maintained Nix lists.
 { lib }:
 
 let

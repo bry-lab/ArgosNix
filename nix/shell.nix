@@ -30,7 +30,7 @@ let
         if missing == [ ] then ""
         else ''
           echo "  ${toString stats.missing} catalogued tool(s) are not packaged yet."
-          echo "  Run 'arsenal profile ${name} --missing' to see them, or help package one."
+          echo "  Run 'argos profile ${name} --missing' to see them, or help package one."
         '';
 
       capNote =
@@ -46,7 +46,7 @@ let
     in
     ''
       echo ""
-      echo "  nix-arsenal :: ${name}"
+      echo "  Argos :: ${name}"
       echo "  ${profile.description}"
       echo "  ${toString stats.available} tools available."
       ${missingNote}
@@ -58,7 +58,7 @@ in
 {
   mkProfileShell = name:
     pkgs.mkShellNoCC {
-      name = "arsenal-${name}";
+      name = "argos-${name}";
       packages = profiles.packagesFor name;
 
       shellHook = ''
@@ -68,9 +68,9 @@ in
         export WORDLISTS="$SECLISTS"
 
         # Keep per-engagement state out of $HOME and out of the store.
-        export ARSENAL_PROFILE="${name}"
-        export ARSENAL_LOOT="''${ARSENAL_LOOT:-$PWD/loot}"
-        mkdir -p "$ARSENAL_LOOT"
+        export ARGOS_PROFILE="${name}"
+        export ARGOS_LOOT="''${ARGOS_LOOT:-$PWD/loot}"
+        mkdir -p "$ARGOS_LOOT"
 
         ${mkBanner name}
       '';
@@ -78,7 +78,7 @@ in
 
   # Shell for working on the repo itself, not for using the tools.
   devShell = pkgs.mkShellNoCC {
-    name = "arsenal-dev";
+    name = "argos-dev";
     packages = with pkgs; [
       python3
       ruff
@@ -93,10 +93,10 @@ in
     ];
     shellHook = ''
       export PYTHONPATH="$PWD/tools''${PYTHONPATH:+:$PYTHONPATH}"
-      arsenal() { python3 -m arsenal.cli "$@"; }
-      export -f arsenal 2>/dev/null || true
-      echo "nix-arsenal dev shell -- ${toString catalog.count} catalog entries"
-      echo "try: arsenal validate | arsenal coverage | arsenal missing --tier 2"
+      argos() { python3 -m argos.cli "$@"; }
+      export -f argos 2>/dev/null || true
+      echo "Argos dev shell -- ${toString catalog.count} catalog entries"
+      echo "try: argos validate | argos coverage | argos missing --tier 2"
     '';
   };
 }

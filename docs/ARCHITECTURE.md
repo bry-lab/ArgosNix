@@ -26,8 +26,8 @@ catalog with hundreds of accidental duplicates and hundreds of accidental
 merges.
 
 What does not diverge is where the code lives. So identity is the normalised
-upstream URL (`tools/arsenal/identity.py`), and every importer's job is to
-resolve its packages to one. `arsenal validate` fails if two entries claim the
+upstream URL (`tools/argos/identity.py`), and every importer's job is to
+resolve its packages to one. `argos validate` fails if two entries claim the
 same upstream.
 
 The normaliser handles the cases that actually come up: `git@` URLs, `.git`
@@ -49,7 +49,7 @@ Tier 2 is where the throughput is, because most modern security tooling is Go or
 Python. Tier 4 exists so the coverage number stays honest: pretending Burp Pro
 is a packaging backlog item rather than a licensing wall helps nobody.
 
-`arsenal missing` sorts the backlog by how many upstream sources ship a tool.
+`argos missing` sorts the backlog by how many upstream sources ship a tool.
 Something shipped in three places is worth an afternoon; something in one usually
 is not.
 
@@ -79,7 +79,7 @@ them, capped at three per tool.
 ## Profiles
 
 Composed from categories, defined in `catalog/profiles.toml`, resolved by both
-`nix/profiles.nix` and `tools/arsenal/profiles.py`.
+`nix/profiles.nix` and `tools/argos/profiles.py`.
 
 Two implementations of the same logic is a smell. It is deliberate: contributors
 without Nix on their machine still need to ask "what is in the dfir profile", and

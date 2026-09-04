@@ -1,6 +1,6 @@
 # NixOS module.
 #
-# This is where nix-arsenal stops being a package list and starts being a
+# This is where Argos stops being a package list and starts being a
 # credible distro replacement. A devShell can put nmap on your PATH; it cannot
 # give it CAP_NET_RAW, load an mac80211 monitor-mode driver, or write a udev
 # rule so your Proxmark is readable without sudo. A security distro's real value
@@ -13,7 +13,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.programs.arsenal;
+  cfg = config.programs.argos;
 
   profiles = import ../../nix/profiles.nix { inherit lib pkgs catalog; };
 
@@ -50,8 +50,8 @@ let
 
 in
 {
-  options.programs.arsenal = {
-    enable = lib.mkEnableOption "the nix-arsenal security toolset";
+  options.programs.argos = {
+    enable = lib.mkEnableOption "the Argos security toolset";
 
     profiles = lib.mkOption {
       type = lib.types.listOf (lib.types.enum profiles.names);
@@ -66,7 +66,7 @@ in
 
     group = lib.mkOption {
       type = lib.types.str;
-      default = "arsenal";
+      default = "argos";
       description = ''
         Group permitted to use capability-wrapped tools. Members can craft raw
         packets and capture traffic, which is close enough to root on a shared
@@ -78,7 +78,7 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
       example = [ "alice" ];
-      description = "Users to add to the arsenal group.";
+      description = "Users to add to the argos group.";
     };
 
     capabilities = {
@@ -123,7 +123,7 @@ in
       # run and fail confusingly if this is not set.
       environment.sessionVariables = {
         SECLISTS = "${pkgs.seclists}/share/seclists";
-        ARSENAL_PROFILES = lib.concatStringsSep "," cfg.profiles;
+        ARGOS_PROFILES = lib.concatStringsSep "," cfg.profiles;
       };
     }
 

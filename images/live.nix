@@ -14,7 +14,7 @@
 #   * Profiles are a parameter, not a fixed set. A full-everything ISO is
 #     20GB+ and takes an hour to build. Build the one you need:
 #       nix build .#iso --override-input profiles '["network" "ad"]'
-#     or import this file with your own programs.arsenal.profiles.
+#     or import this file with your own programs.argos.profiles.
 { config, lib, pkgs, modulesPath, ... }:
 
 {
@@ -22,10 +22,10 @@
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
   ];
 
-  programs.arsenal = {
+  programs.argos = {
     enable = true;
     profiles = lib.mkDefault [ "recon" "network" "webapp" "ad" "revuln" ];
-    users = [ "arsenal" ];
+    users = [ "argos" ];
     capabilities.enable = true;
     hardware = {
       wireless = true;
@@ -36,16 +36,16 @@
   };
 
   # -- identity ---------------------------------------------------------
-  networking.hostName = "arsenal";
-  users.users.arsenal = {
+  networking.hostName = "argos";
+  users.users.argos = {
     isNormalUser = true;
-    description = "nix-arsenal live user";
+    description = "Argos live user";
     extraGroups = [ "wheel" "networkmanager" "wireshark" "dialout" "plugdev" ];
     initialHashedPassword = "";
   };
 
   security.sudo.wheelNeedsPassword = false;
-  services.getty.autologinUser = lib.mkDefault "arsenal";
+  services.getty.autologinUser = lib.mkDefault "argos";
 
   # No sshd on the live image. If you need remote access you can start it
   # deliberately; having one listening by default on an engagement network is
@@ -75,7 +75,7 @@
   services.dbus.enable = true;
 
   # -- ephemerality -----------------------------------------------------
-  fileSystems."/home/arsenal" = {
+  fileSystems."/home/argos" = {
     fsType = "tmpfs";
     options = [ "mode=0755" "size=4G" ];
     neededForBoot = true;
@@ -83,7 +83,7 @@
 
   # Somewhere to deliberately persist evidence. Mount a real device here.
   systemd.tmpfiles.rules = [
-    "d /loot 0750 arsenal users -"
+    "d /loot 0750 argos users -"
   ];
 
   # -- posture ----------------------------------------------------------
@@ -102,17 +102,17 @@
     experimental-features = [ "nix-command" "flakes" ];
     substituters = [
       "https://cache.nixos.org"
-      "https://arsenal.cachix.org" # replace with your own cache
+      # "https://YOUR-CACHE.cachix.org" # add your own cache here
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      # "arsenal.cachix.org-1:REPLACE_ME"
+      # "YOUR-CACHE.cachix.org-1:YOUR-PUBLIC-KEY"
     ];
   };
 
   isoImage = {
-    isoName = lib.mkForce "nix-arsenal-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.iso";
-    volumeID = lib.mkForce "ARSENAL";
+    isoName = lib.mkForce "argos-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.iso";
+    volumeID = lib.mkForce "ARGOS";
     squashfsCompression = "zstd -Xcompression-level 6";
     makeEfiBootable = true;
     makeUsbBootable = true;

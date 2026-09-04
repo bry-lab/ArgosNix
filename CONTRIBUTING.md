@@ -6,11 +6,11 @@ Package one tool from the backlog:
 
 ```sh
 nix develop .#dev
-arsenal missing --tier 2               # sorted by how many distros ship it
-arsenal new sometool --upstream https://github.com/x/y --builder go
+argos missing --tier 2               # sorted by how many distros ship it
+argos new sometool --upstream https://github.com/x/y --builder go
 nix-init --url https://github.com/x/y  # fills in hashes
 nix build .#sometool
-arsenal validate
+argos validate
 ```
 
 Then read [docs/UPSTREAMING.md](docs/UPSTREAMING.md) — if the tool is broadly
@@ -21,14 +21,14 @@ useful, send it to nixpkgs instead and we will point at it.
 Edit `catalog/tools/*.toml`, then:
 
 ```sh
-arsenal fmt        # normalise formatting; CI checks this
-arsenal validate   # schema + referential integrity
+argos fmt        # normalise formatting; CI checks this
+argos validate   # schema + referential integrity
 ```
 
 Rules that are enforced:
 
 - `upstream` is the identity. Two entries may not share one.
-- Tier 1 requires a real `nixpkgs` attribute — `arsenal verify` checks it exists.
+- Tier 1 requires a real `nixpkgs` attribute — `argos verify` checks it exists.
 - Tier 4 must not claim a package.
 - At most four categories. If you want five, the taxonomy is wrong; open an
   issue about the taxonomy instead.

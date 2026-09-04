@@ -53,13 +53,28 @@
         profiles = profilesFor pkgs;
       };
 
+      # The `argos` CLI as a runnable program, so `nix run .#argos -- profile`
+      # works without entering the dev shell -- and `nix run
+      # github:bry-lab/ArgosNix#argos` works without cloning at all. The catalog
+      # is bundled so it resolves outside a checkout; a real checkout still wins
+      # at runtime (see find_root), keeping write commands writable.
+      argosCliFor = pkgs: pkgs.writeShellApplication {
+        name = "argos";
+        runtimeInputs = [ pkgs.python3 ];
+        text = ''
+          export PYTHONPATH="${./tools}''${PYTHONPATH:+:$PYTHONPATH}"
+          export ARGOS_ROOT="''${ARGOS_ROOT:-${./.}}"
+          exec python3 -m argos.cli "$@"
+        '';
+      };
+
     in
     {
       # -- the catalog itself, for downstream consumers ------------------
       #
       # Exposed so other flakes can build their own profiles without forking:
-      #   inherit (arsenal.lib) catalog;
-      #   myShell = pkgs.mkShell { packages = arsenal.lib.select pkgs [ "web" "cloud" ]; };
+      #   inherit (argos.lib) catalog;
+      #   myShell = pkgs.mkShell { packages = argos.lib.select pkgs [ "web" "cloud" ]; };
       lib = {
         inherit catalog;
         profiles = profilesFor;
@@ -98,7 +113,7 @@
           profiles = profilesFor pkgs;
 
           mkEnv = name: pkgs.buildEnv {
-            name = "arsenal-${name}";
+            name = "argos-${name}";
             paths = profiles.packagesFor name;
             # Security tooling collides constantly: three packages ship a
             # `bin/dnsenum`, four ship overlapping man pages. Last one wins and
@@ -120,7 +135,7 @@
           mkImage = format: nixos-generators.nixosGenerate {
             inherit system format;
             modules = [
-              self.nixosModules.arsenal
+              self.nixosModules.argos
               ./images/live.nix
               { nixpkgs.overlays = [ self.overlays.default ]; }
             ];
@@ -137,31 +152,42 @@
         environments // ourPackages // images // {
           default = environments.full;
 
+          # The maintenance CLI, installable and runnable on its own.
+          argos = argosCliFor pkgs;
+
           # Machine-readable catalog, for the coverage dashboard and for anyone
           # who wants the mapping without the Nix.
-          catalog-json = pkgs.writeText "arsenal-catalog.json"
+          catalog-json = pkgs.writeText "argos-catalog.json"
             (builtins.toJSON catalog.entries);
+        });
+
+      # -- apps: `nix run .#argos -- <command>` --------------------------
+      apps = forAllSystems ({ pkgs, ... }:
+        let argos = argosCliFor pkgs; in
+        {
+          argos = { type = "app"; program = "${argos}/bin/argos"; };
+          default = { type = "app"; program = "${argos}/bin/argos"; };
         });
 
       # -- NixOS: the part that actually replaces a distro ----------------
       nixosModules = {
-        default = self.nixosModules.arsenal;
-        arsenal = import ./modules/nixos { inherit catalog; };
+        default = self.nixosModules.argos;
+        argos = import ./modules/nixos { inherit catalog; };
       };
 
       homeModules = {
-        default = self.homeModules.arsenal;
-        arsenal = import ./modules/home-manager { inherit catalog; };
+        default = self.homeModules.argos;
+        argos = import ./modules/home-manager { inherit catalog; };
       };
 
       # A bootable reference system per Linux architecture. This is what people
       # mean by a real security distro -- a shell full of binaries is not a
       # substitute for a live ISO with working monitor mode.
       nixosConfigurations = lib.listToAttrs (map
-        (system: lib.nameValuePair "arsenal-${system}" (nixpkgs.lib.nixosSystem {
+        (system: lib.nameValuePair "argos-${system}" (nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            self.nixosModules.arsenal
+            self.nixosModules.argos
             ./images/live.nix
             { nixpkgs.overlays = [ self.overlays.default ]; }
           ];
@@ -184,17 +210,17 @@
         in
         {
           # Catalog integrity, without needing nix to evaluate every package.
-          catalog = pkgs.runCommand "arsenal-catalog-check"
+          catalog = pkgs.runCommand "argos-catalog-check"
             { nativeBuildInputs = [ pkgs.python3 ]; } ''
             cd ${./.}
-            PYTHONPATH=tools python3 -m arsenal.cli validate
-            PYTHONPATH=tools python3 -m arsenal.cli profile > /dev/null
+            PYTHONPATH=tools python3 -m argos.cli validate
+            PYTHONPATH=tools python3 -m argos.cli profile > /dev/null
             touch $out
           '';
 
           # Every profile must resolve to a non-empty package list. Catches a
           # renamed nixpkgs attribute before a user does.
-          profiles-resolve = pkgs.runCommand "arsenal-profiles-check" { } ''
+          profiles-resolve = pkgs.runCommand "argos-profiles-check" { } ''
             ${lib.concatMapStringsSep "\n"
               (name: ''
                 echo "${name}: ${toString (builtins.length (profiles.packagesFor name))} packages"
