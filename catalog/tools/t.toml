@@ -1,5 +1,5 @@
-# Generated and maintained by `arsenal` -- see tools/README.md.
-# Hand edits are fine; run `arsenal fmt` afterwards to normalise.
+# Generated and maintained by `argos` -- see tools/README.md.
+# Hand edits are fine; run `argos fmt` afterwards to normalise.
 
 [tcpdump]
 upstream = "https://github.com/the-tcpdump-group/tcpdump"

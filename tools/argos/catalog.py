@@ -119,8 +119,8 @@ class Catalog:
         for shard, tools in sorted(shards.items()):
             path = tools_dir / f"{shard}.toml"
             body = [
-                "# Generated and maintained by `arsenal` -- see tools/README.md.",
-                "# Hand edits are fine; run `arsenal fmt` afterwards to normalise.",
+                "# Generated and maintained by `argos` -- see tools/README.md.",
+                "# Hand edits are fine; run `argos fmt` afterwards to normalise.",
                 "",
             ]
             for tool in sorted(tools, key=lambda t: t.id):

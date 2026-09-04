@@ -10,7 +10,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.programs.arsenal;
+  cfg = config.programs.argos;
   profiles = import ../../nix/profiles.nix { inherit lib pkgs catalog; };
 
   selected = lib.unique (lib.concatMap profiles.packagesFor cfg.profiles);
@@ -18,8 +18,8 @@ let
 
 in
 {
-  options.programs.arsenal = {
-    enable = lib.mkEnableOption "the nix-arsenal security toolset";
+  options.programs.argos = {
+    enable = lib.mkEnableOption "the Argos security toolset";
 
     profiles = lib.mkOption {
       type = lib.types.listOf (lib.types.enum profiles.names);
@@ -42,14 +42,14 @@ in
       SECLISTS = "${pkgs.seclists}/share/seclists";
     };
 
-    home.activation.arsenalCapabilityWarning =
+    home.activation.argosCapabilityWarning =
       lib.mkIf (!cfg.quiet && neededCaps != [ ])
         (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          $VERBOSE_ECHO "nix-arsenal: ${toString (builtins.length selected)} tools installed."
-          $VERBOSE_ECHO "nix-arsenal: these profiles include tools needing ${
+          $VERBOSE_ECHO "Argos: ${toString (builtins.length selected)} tools installed."
+          $VERBOSE_ECHO "Argos: these profiles include tools needing ${
             lib.concatStringsSep ", " neededCaps
           }."
-          $VERBOSE_ECHO "nix-arsenal: home-manager cannot grant those. Use sudo, or the NixOS module."
+          $VERBOSE_ECHO "Argos: home-manager cannot grant those. Use sudo, or the NixOS module."
         '');
   };
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/OWNER/nix-arsenal/catalog/schema.json",
-  "title": "nix-arsenal catalog entry",
+  "$id": "https://github.com/bry-lab/ArgosNix/catalog/schema.json",
+  "title": "Argos catalog entry",
   "description": "One entry per canonical tool. The map key is the canonical id (lowercase, [a-z0-9-]). Identity is the `upstream` URL, not the id -- distro names diverge, upstream repos do not.",
   "type": "object",
   "additionalProperties": { "$ref": "#/$defs/tool" },
@@ -14,7 +14,7 @@
         "upstream": {
           "type": "string",
           "format": "uri",
-          "description": "Canonical source URL. THE dedupe key. Prefer the VCS repo over a homepage. Normalised by arsenal.identity before comparison."
+          "description": "Canonical source URL. THE dedupe key. Prefer the VCS repo over a homepage. Normalised by argos.identity before comparison."
         },
         "description": { "type": "string", "maxLength": 200 },
         "license": {

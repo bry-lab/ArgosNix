@@ -1,4 +1,4 @@
-# Canonical taxonomy for nix-arsenal.
+# Canonical taxonomy for Argos.
 #
 # This is OUR taxonomy, deliberately not BlackArch's or Kali's. Importers map
 # upstream groups into these via the `maps` key. A tool may hold several

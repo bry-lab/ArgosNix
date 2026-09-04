@@ -2,13 +2,13 @@
 # system heroics. Most of the backlog looks like this, which is why tier 2 is
 # where the throughput is.
 #
-# Generated skeleton from `arsenal new certipy --builder python`, hashes filled
+# Generated skeleton from `argos new certipy --builder python`, hashes filled
 # in by `nix-init --url https://github.com/ly4k/Certipy`.
 #
 # NOTE: the hash below is still lib.fakeHash, so this does not build yet. The
 # catalog entry deliberately does NOT set `local = "certipy"` until it does --
 # claiming a package that fails to build would inflate the coverage number,
-# which is the one number in this repo that has to stay honest. `arsenal
+# which is the one number in this repo that has to stay honest. `argos
 # validate` warns about the gap until you close it.
 { lib
 , python3Packages

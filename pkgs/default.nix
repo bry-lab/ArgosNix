@@ -2,7 +2,7 @@
 #
 # by-name/<tool>/package.nix is discovered automatically -- adding a package is
 # one directory and one file, no registry to edit. The directory name must match
-# the catalog id and the catalog entry's `local` field, and `arsenal validate`
+# the catalog id and the catalog entry's `local` field, and `argos validate`
 # enforces that.
 #
 # POLICY: anything here that is broadly useful should be upstreamed to nixpkgs

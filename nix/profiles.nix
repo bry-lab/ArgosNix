@@ -1,6 +1,6 @@
 # Turn catalog entries + profile definitions into concrete package lists.
 #
-# This mirrors tools/arsenal/profiles.py. Keep them in step: the `profiles-resolve`
+# This mirrors tools/argos/profiles.py. Keep them in step: the `profiles-resolve`
 # flake check evaluates every profile here, and the `catalog` check runs the
 # Python path, so a divergence shows up as one of them failing.
 #
@@ -20,7 +20,7 @@ let
     in attrByPath path null pkgs;
 
   # A tool contributes a package only if its attribute actually exists. Missing
-  # attributes are collected rather than thrown so `arsenal`/CI can report them.
+  # attributes are collected rather than thrown so `argos`/CI can report them.
   toPackage = tool:
     if tool.attr == null then null else resolveAttr tool.attr;
 

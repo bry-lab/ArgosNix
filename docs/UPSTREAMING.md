@@ -23,7 +23,7 @@ its cache and its update bots for free.
 
 1. Package it here first. It is faster to iterate, and users get it immediately.
 2. Open the nixpkgs PR. Link it in a comment in the derivation.
-3. When it lands, run `arsenal verify --promote`. The entry becomes tier 1, the
+3. When it lands, run `argos verify --promote`. The entry becomes tier 1, the
    local derivation is deleted, and the catalog now points at nixpkgs.
 
 Step 3 is automated nightly. Nothing rots.

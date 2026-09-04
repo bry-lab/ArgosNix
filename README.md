@@ -1,4 +1,4 @@
-# nix-arsenal
+# Argos
 
 A curated catalog of security tooling — deduplicated by where the code actually
 lives, organised by what you are actually trying to do, and delivered as Nix
@@ -6,9 +6,9 @@ profiles you can install anywhere, pin per engagement, and rebuild byte-for-byte
 in two years.
 
 ```sh
-nix develop github:OWNER/nix-arsenal#osint      # or #webapp, #ad, #dfir, #malware…
-nix profile install github:OWNER/nix-arsenal#network
-nix build github:OWNER/nix-arsenal#iso          # a live system, not just a shell
+nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
+nix profile install github:bry-lab/ArgosNix#network
+nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 ```
 
 ## Why this exists
@@ -30,7 +30,7 @@ is regenerated nightly:
 - Every tool in the catalog is mapped to its upstream and deduplicated by where
   the code lives. **That mapping is useful on its own.**
 - Roughly a quarter of the catalog is already in nixpkgs and works today.
-- The rest is a packaging backlog, tiered by difficulty. `arsenal missing --tier 2`
+- The rest is a packaging backlog, tiered by difficulty. `argos missing --tier 2`
   is the contributor queue.
 - Some tools will never be here: Burp Pro, Cobalt Strike, Nessus and friends are
   licensed and not redistributable. They are catalogued as tier 4 with a note,
@@ -50,7 +50,7 @@ nix/              reads the catalog, generates everything
 pkgs/by-name/     derivations for tools nixpkgs lacks
 modules/          NixOS + home-manager: capabilities, drivers, udev
 images/           live ISO / VM / qcow definitions
-tools/arsenal/    the CLI: importers, validation, coverage
+tools/argos/      the CLI: importers, validation, coverage
 templates/        per-engagement scaffold
 ```
 
@@ -67,8 +67,8 @@ Categories are how the catalog is organised (`web`, `active-directory`,
 web testing share their recon tooling instead of two lists drifting apart.
 
 ```sh
-nix run .#arsenal -- profile              # every profile and its coverage
-nix run .#arsenal -- profile ad --all     # what is in it, including gaps
+nix run .#argos -- profile              # every profile and its coverage
+nix run .#argos -- profile ad --all     # what is in it, including gaps
 ```
 
 ## The capability problem
@@ -82,7 +82,7 @@ turns that into `security.wrappers`, driver selection and udev rules
 automatically:
 
 ```nix
-programs.arsenal = {
+programs.argos = {
   enable = true;
   profiles = [ "network" "ad" "wireless" ];
   users = [ "you" ];
@@ -97,26 +97,31 @@ mid-engagement.
 
 ## Binary cache
 
-**Do not use this without a cache.** Building a full profile from source takes
-hours and tens of gigabytes. `cache.nixos.org` covers the tier-1 tools; our own
-derivations come from `arsenal.cachix.org`:
+A binary cache is strongly recommended before building large profiles from
+source — that can take hours and tens of gigabytes. The good news is that
+`cache.nixos.org` already covers the tier-1 tools (most of the catalog), so many
+profiles need no extra setup at all.
+
+Argos's own derivations — the tools nixpkgs lacks — are not yet served from a
+public cache. When you have one, point at it like this (substitute your real URL
+and key):
 
 ```nix
 nix.settings = {
-  substituters = [ "https://arsenal.cachix.org" ];
-  trusted-public-keys = [ "arsenal.cachix.org-1:REPLACE_ME" ];
+  substituters = [ "https://cache.nixos.org" "https://YOUR-CACHE.cachix.org" ];
+  trusted-public-keys = [ "YOUR-CACHE.cachix.org-1:YOUR-PUBLIC-KEY" ];
 };
 ```
 
-Unfree packages are never pushed to the cache. You build those yourself, which
-is the price of them being unfree.
+Unfree packages are never pushed to a cache. You build those yourself, which is
+the price of them being unfree.
 
 ## Per-engagement pinning
 
 The reason to do any of this in Nix:
 
 ```sh
-nix flake init -t github:OWNER/nix-arsenal#engagement
+nix flake init -t github:bry-lab/ArgosNix#engagement
 nix flake lock && nix flake archive     # pin, then fetch the whole closure
 git add flake.lock && git commit
 ```
@@ -128,13 +133,13 @@ everything, whether or not the upstream repos still exist.
 ## Contributing
 
 The most valuable contribution is not code. It is packaging one tool from
-`arsenal missing --tier 2` and, when it is broadly useful,
+`argos missing --tier 2` and, when it is broadly useful,
 [sending it to nixpkgs](docs/UPSTREAMING.md) rather than here.
 
 ```sh
 nix develop .#dev
-arsenal missing --tier 2 --category web
-arsenal new sometool --upstream https://github.com/x/y --builder go
+argos missing --tier 2 --category web
+argos new sometool --upstream https://github.com/x/y --builder go
 nix-init --url https://github.com/x/y
 ```
 
@@ -144,9 +149,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and
 ## Scope and legality
 
 These are dual-use tools. Everything here is packaging of software that is
-already publicly available and shipped by four existing distributions; nothing
-is a novel capability. Use it against systems you are authorised to test.
-Licensed commercial software is catalogued but never redistributed.
+already publicly available; nothing is a novel capability. Use it against
+systems you are authorised to test. Licensed commercial software is catalogued
+but never redistributed.
 
 ## Licence
 
