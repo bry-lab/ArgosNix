@@ -145,11 +145,14 @@ in
 
     (lib.mkIf cfg.hardware.wireless {
       hardware.enableRedistributableFirmware = true;
-      # Realtek and Atheros adapters that people actually buy for monitor mode
-      # need out-of-tree drivers. Keep this list short and current; each entry
-      # is a kernel rebuild risk on every kernel bump.
+      # Realtek adapters that people actually buy for monitor mode need
+      # out-of-tree drivers. These track the kernel and break often on bumps --
+      # keep this list short and current. As of this pin the whole rtl88xxau
+      # family (rtl8812au/8814au/8821au) is marked broken upstream, so we ship
+      # rtl88x2bu (RTL8812BU/8822BU, e.g. Alfa AWUS036ACM). Swap back to
+      # rtl88xxau-aircrack once nixpkgs unbreaks it.
       boot.extraModulePackages = with config.boot.kernelPackages; [
-        rtl8812au
+        rtl88x2bu
       ];
       networking.networkmanager.unmanaged = [
         # Leave monitor-mode interfaces alone; NetworkManager will otherwise
@@ -168,13 +171,14 @@ in
 
     (lib.mkIf cfg.hardware.smartcard {
       services.pcscd.enable = true;
-      services.udev.packages = with pkgs; [ proxmark3-rrg libnfc ];
-      environment.systemPackages = with pkgs; [ pcsctools libnfc ];
+      services.udev.packages = with pkgs; [ proxmark3 libnfc ];
+      environment.systemPackages = with pkgs; [ pcsc-tools libnfc ];
     })
 
     (lib.mkIf cfg.hardware.android {
-      programs.adb.enable = true;
-      services.udev.packages = [ pkgs.android-udev-rules ];
+      # programs.adb.enable was removed (systemd >=258 handles the uaccess udev
+      # rules automatically); shipping android-tools is now all that is needed.
+      environment.systemPackages = [ pkgs.android-tools ];
     })
 
     (lib.mkIf cfg.detonation.enable {

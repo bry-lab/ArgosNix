@@ -16,6 +16,7 @@ license = "MIT"
 categories = ["active-directory"]
 tier = 2
 builder = "python"
+local = "certipy"
 
 [cewl]
 upstream = "https://github.com/digininja/CeWL"

@@ -51,6 +51,9 @@ categories = [
 [malware]
 description = "Malware triage and analysis: unpacking, document and PDF analysis, sandboxed detonation."
 categories = ["malware-analysis", "reverse-engineering", "forensics"]
+# Memory forensics is core here and volatility3 is non-free; opt in so it is
+# included rather than silently dropped.
+unfree = true
 
 [revuln]
 description = "Reverse engineering and exploit development."
@@ -59,6 +62,8 @@ categories = ["reverse-engineering", "exploitation"]
 [dfir]
 description = "Digital forensics and incident response."
 categories = ["forensics", "malware-analysis", "defense"]
+# Same reason as the malware profile: volatility3 is non-free but essential.
+unfree = true
 
 [cloud]
 description = "Cloud, container and IaC security assessment."

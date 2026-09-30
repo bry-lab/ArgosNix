@@ -3,13 +3,9 @@
 # where the throughput is.
 #
 # Generated skeleton from `argos new certipy --builder python`, hashes filled
-# in by `nix-init --url https://github.com/ly4k/Certipy`.
-#
-# NOTE: the hash below is still lib.fakeHash, so this does not build yet. The
-# catalog entry deliberately does NOT set `local = "certipy"` until it does --
-# claiming a package that fails to build would inflate the coverage number,
-# which is the one number in this repo that has to stay honest. `argos
-# validate` warns about the gap until you close it.
+# in by `nix-init --url https://github.com/ly4k/Certipy`. The catalog entry
+# claims it with `local = "certipy"`, so it counts toward coverage -- which is
+# honest only because it actually builds.
 { lib
 , python3Packages
 , fetchFromGitHub
@@ -24,11 +20,15 @@ python3Packages.buildPythonApplication rec {
     owner = "ly4k";
     repo = "Certipy";
     tag = "${version}";
-    # Replace with the real hash: nix-prefetch-github ly4k Certipy --rev 4.8.2
-    hash = lib.fakeHash;
+    hash = "sha256-Era5iNLJkZIRvN/p3BiD/eDiDQme24G65VSG97tuEOQ=";
   };
 
   build-system = with python3Packages; [ setuptools ];
+
+  # Certipy pins exact dependency versions (pyasn1==0.4.8 and friends) that are
+  # older than what nixpkgs ships. It works fine against the current versions;
+  # relax the pins rather than vendoring stale, unmaintained dependencies.
+  pythonRelaxDeps = true;
 
   dependencies = with python3Packages; [
     asn1crypto

@@ -28,18 +28,37 @@
         (tool: lib.last (lib.splitString "." tool.attr))
         (lib.filter (t: t.unfree && t.attr != null) (lib.attrValues catalog.entries)));
 
+      # Source-available security tools that nixpkgs marks unfree (non-commercial
+      # terms or a missing licence) but which Argos ships as normal tools: they
+      # are freely redistributable and standard in the field, so they belong in
+      # the flagship free profiles -- wpscan in webapp, waybackurls in osint --
+      # rather than gated behind a catalog `unfree = true` flag. Like the catalog
+      # unfree set, these must never be pushed to a public binary cache.
+      permittedUnfree = [ "wpscan" "waybackurls" ];
+
       catalog = import ./nix/catalog.nix { inherit lib; };
+
+      # One nixpkgs config, shared by the flake's own pkgs and by every NixOS
+      # system and image we build, so the unfree/insecure policy is identical
+      # everywhere rather than drifting between the devShells and the ISO.
+      nixpkgsConfig = {
+        allowUnfreePredicate = pkg:
+          builtins.elem (lib.getName pkg) (unfreeNames ++ permittedUnfree);
+        # A handful of genuinely useful forensics and RE tools are stuck on
+        # ancient runtimes. Allowing them repo-wide is a deliberate trade;
+        # revisit annually and drop anything that has been fixed upstream.
+        #
+        # ecdsa: pulled in transitively by impacket (the backbone of the AD
+        # tooling). Upstream nixpkgs flags it for a timing side-channel that
+        # does not matter for offensive use against a target you are testing.
+        # The version prefix tracks the nixpkgs python; bump it when it drifts.
+        permittedInsecurePackages = [ "python3.14-ecdsa-0.19.2" ];
+      };
 
       pkgsFor = system: import nixpkgs {
         inherit system;
         overlays = [ self.overlays.default ];
-        config = {
-          allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreeNames;
-          # A handful of genuinely useful forensics and RE tools are stuck on
-          # ancient runtimes. Allowing them repo-wide is a deliberate trade;
-          # revisit annually and drop anything that has been fixed upstream.
-          permittedInsecurePackages = [ ];
-        };
+        config = nixpkgsConfig;
       };
 
       forAllSystems = f: lib.genAttrs systems (system: f {
@@ -137,7 +156,7 @@
             modules = [
               self.nixosModules.argos
               ./images/live.nix
-              { nixpkgs.overlays = [ self.overlays.default ]; }
+              { nixpkgs.overlays = [ self.overlays.default ]; nixpkgs.config = nixpkgsConfig; }
             ];
           };
 
@@ -163,10 +182,17 @@
 
       # -- apps: `nix run .#argos -- <command>` --------------------------
       apps = forAllSystems ({ pkgs, ... }:
-        let argos = argosCliFor pkgs; in
+        let
+          argos = argosCliFor pkgs;
+          app = {
+            type = "app";
+            program = "${argos}/bin/argos";
+            meta.description = "The Argos catalog maintenance CLI";
+          };
+        in
         {
-          argos = { type = "app"; program = "${argos}/bin/argos"; };
-          default = { type = "app"; program = "${argos}/bin/argos"; };
+          argos = app;
+          default = app;
         });
 
       # -- NixOS: the part that actually replaces a distro ----------------
@@ -189,7 +215,7 @@
           modules = [
             self.nixosModules.argos
             ./images/live.nix
-            { nixpkgs.overlays = [ self.overlays.default ]; }
+            { nixpkgs.overlays = [ self.overlays.default ]; nixpkgs.config = nixpkgsConfig; }
           ];
         }))
         [ "x86_64-linux" "aarch64-linux" ]);

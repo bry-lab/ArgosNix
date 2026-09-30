@@ -17,3 +17,6 @@ license = "VolatilitySoftwareLicense"
 categories = ["forensics", "malware-analysis"]
 tier = 1
 nixpkgs = "volatility3"
+# The Volatility Software License is non-free in nixpkgs (field-of-use terms),
+# so this is opt-in: it only appears in profiles that set `unfree = true`.
+unfree = true
