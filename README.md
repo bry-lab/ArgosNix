@@ -71,6 +71,71 @@ nix run .#argos -- profile              # every profile and its coverage
 nix run .#argos -- profile ad --all     # what is in it, including gaps
 ```
 
+## Using it: load and offload a package set
+
+A "package set" is a profile. Loading one means putting its tools on your `PATH`;
+offloading means taking them back off. Nothing is ever installed globally unless
+you ask for it.
+
+```sh
+# Peek before you load — what is in a set, and what (if anything) is missing:
+nix run github:bry-lab/ArgosNix#argos -- profile dfir --all
+
+# Load into a throwaway shell. Nothing touches your system; the tools are on
+# PATH only inside this shell:
+nix develop github:bry-lab/ArgosNix#dfir
+#   ...work with the forensics tools...
+exit                     # offload — your PATH is clean again, system untouched
+
+# Or install a set persistently for your user:
+nix profile install github:bry-lab/ArgosNix#dfir
+nix profile list                     # see what you have loaded
+nix profile remove dfir              # offload it (by name, from the list)
+nix store gc                         # reclaim the disk afterwards (optional)
+
+# Load more than one set — they union and de-duplicate automatically:
+nix profile install github:bry-lab/ArgosNix#osint github:bry-lab/ArgosNix#webapp
+```
+
+Rule of thumb: `nix develop …#<profile>` then `exit` for a session; `nix profile
+install` / `remove` only when you want the set to stick around. Replace the
+`github:bry-lab/ArgosNix` prefix with `.` when you are inside a local clone
+(`nix develop .#dfir`).
+
+## Nix hosts and non-Nix hosts
+
+Every command in this README is the same on every machine. The only variable is
+whether Nix — and NixOS — is already there. Nothing here uses your system package
+manager, and nothing needs root beyond installing Nix itself.
+
+| Your host | What you do | What you get |
+| --- | --- | --- |
+| **NixOS** | The module (below), or the same `nix develop` / `profile` commands | Everything, including capabilities: `security.wrappers`, drivers, udev |
+| **Any other Linux with Nix** | The exact commands above | Binaries + reproducibility; capabilities degrade to `sudo`/`setcap` |
+| **Any Linux without Nix** | Install Nix once (below), then you *are* a Nix host | Same as the row above — identical commands, identical results |
+
+So a laptop running Ubuntu, Debian, Fedora, Arch (or WSL) uses Argos exactly the
+way a native NixOS box does — install Nix, then run the same lines. You do not
+convert your machine to NixOS and you do not install tools into your OS.
+
+```sh
+# Turn a non-Nix Linux host into a Nix host (pick one):
+
+# Determinate Systems installer — recommended, enables flakes out of the box:
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+# ...or the official installer, then enable flakes yourself:
+sh <(curl -L https://nixos.org/nix/install) --daemon
+mkdir -p ~/.config/nix
+echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+```
+
+Open a new shell after installing, and `nix develop github:bry-lab/ArgosNix#osint`
+behaves the same on Ubuntu as it does on NixOS.
+
+On NixOS you additionally get the module, which is the one thing a plain
+`nix develop` cannot do — see below.
+
 ## The capability problem
 
 A devShell can put `nmap` on your PATH. It cannot give it `CAP_NET_RAW`, load a
