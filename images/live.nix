@@ -24,7 +24,7 @@
 
   programs.argos = {
     enable = true;
-    profiles = lib.mkDefault [ "recon" "network" "webapp" "ad" "revuln" ];
+    profiles = lib.mkDefault [ "osint" "network" "webapp" "ad" "revuln" ];
     users = [ "argos" ];
     capabilities.enable = true;
     hardware = {
@@ -49,8 +49,8 @@
 
   # No sshd on the live image. If you need remote access you can start it
   # deliberately; having one listening by default on an engagement network is
-  # an own-goal.
-  services.openssh.enable = lib.mkDefault false;
+  # an own-goal. mkForce because the installation-cd profile enables it.
+  services.openssh.enable = lib.mkForce false;
 
   # -- desktop ----------------------------------------------------------
   # Sway rather than a full DE: fast to build, low RAM, and the tooling here is
