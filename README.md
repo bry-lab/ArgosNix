@@ -86,21 +86,41 @@ nix run github:bry-lab/ArgosNix#argos -- profile dfir --all
 nix develop github:bry-lab/ArgosNix#dfir
 #   ...work with the forensics tools...
 exit                     # offload — your PATH is clean again, system untouched
-
-# Or install a set persistently for your user:
-nix profile install github:bry-lab/ArgosNix#dfir
-nix profile list                     # see what you have loaded
-nix profile remove dfir              # offload it (by name, from the list)
-nix store gc                         # reclaim the disk afterwards (optional)
-
-# Load more than one set — they union and de-duplicate automatically:
-nix profile install github:bry-lab/ArgosNix#osint github:bry-lab/ArgosNix#webapp
 ```
 
-Rule of thumb: `nix develop …#<profile>` then `exit` for a session; `nix profile
-install` / `remove` only when you want the set to stick around. Replace the
-`github:bry-lab/ArgosNix` prefix with `.` when you are inside a local clone
-(`nix develop .#dfir`).
+Rule of thumb: use the throwaway shell for a session, and `nix profile` (below)
+when you want tools to stick around. Replace the `github:bry-lab/ArgosNix` prefix
+with `.` when you are inside a local clone (`nix develop .#dfir`).
+
+### Keeping tools around: `nix profile` as a package manager
+
+If you want tools installed the way a normal package manager installs them —
+present across shells and reboots until you remove them — use `nix profile`. It
+takes Argos profiles and plain nixpkgs packages side by side:
+
+```sh
+# install (load) — stays until you remove it
+nix profile install github:bry-lab/ArgosNix#revuln
+nix profile install nixpkgs#nmap nixpkgs#gdb nixpkgs#ghidra
+
+# whole Argos sets stack and de-duplicate against each other
+nix profile install github:bry-lab/ArgosNix#osint github:bry-lab/ArgosNix#webapp
+
+nix profile list             # see what's installed
+nix profile remove ghidra    # remove (offload) one, by name from the list
+nix profile upgrade --all    # update everything to the latest
+nix profile rollback         # undo the last change if something breaks
+```
+
+One catch: removing a tool does not free disk space immediately. Nix keeps a
+history of old profile versions — that is what makes `rollback` work — and the
+store's automatic cleanup will not touch anything still referenced by that
+history. To actually reclaim the space:
+
+```sh
+nix profile wipe-history --older-than 7d   # drop old profile generations
+nix store gc                               # then collect the now-unused paths
+```
 
 ## Nix hosts and non-Nix hosts
 
