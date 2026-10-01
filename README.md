@@ -1,23 +1,13 @@
 # Argos
 
-A catalog of security tools organized into categories and packed and delivered as Nix profiles you can install anywhere, all in one place
+A catalog of security tools organized into categories and packed and delivered 
+as Nix profiles you can install anywhere, all in one place
 
 ```sh
 nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
 nix profile install github:bry-lab/ArgosNix#network
 nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 ```
-
-## Why this exists
-
-Security tooling is scattered across ecosystems, heavily duplicated, and hard to
-reproduce. Covering two specialisms — say OSINT and malware analysis — usually
-means running two operating systems. A reproducible toolset for an engagement
-means pinning a rolling release and hoping. Adding a few tools of your own means
-maintaining a Dockerfile.
-
-Nix fixes all three problems, and the packaging was the only thing standing in
-the way. So the catalog is the project. The flake is a thin generator over it.
 
 ## Status — read this before relying on it
 
