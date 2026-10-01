@@ -39,7 +39,7 @@ modules/          NixOS + home-manager: capabilities, drivers, udev
 images/           live ISO / VM / qcow definitions
 tools/argos/      the CLI: importers, validation, coverage
 templates/        per-engagement scaffold
-examples/         a ready-to-copy NixOS configuration.nix
+examples/         ready-to-copy configs (a full VM system, and a module)
 ```
 
 **Nothing hand-lists packages in a `.nix` file.** Edit `catalog/`, and the
@@ -168,9 +168,14 @@ On non-NixOS Linux you get the binaries and not the capabilities. The shell
 tells you which tools are affected rather than letting you find out
 mid-engagement.
 
-A complete, copy-ready base system that wires this up — Nix settings, automatic
-garbage collection, VM guest niceties and the `programs.argos` block above —
-lives in [examples/configuration.nix](examples/configuration.nix).
+Two ready-made configs ship with the repo:
+
+- [examples/nixos-vm/](examples/nixos-vm/) — a **complete drop-in system** for a
+  fresh NixOS VM. Copy two files in, keep your generated
+  `hardware-configuration.nix`, `nixos-rebuild switch`, then
+  `nix profile install …#<profile>` per use case.
+- [examples/configuration.nix](examples/configuration.nix) — a **partial module**
+  to compose into an existing system you already run.
 
 ## Binary cache
 
