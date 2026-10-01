@@ -82,6 +82,12 @@ in
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
 
+  # --- Desktop (optional) --------------------------------------------------
+  # The base system is headless on purpose -- most of the tooling is
+  # terminal-first. Uncomment for a lightweight XFCE desktop:
+  # services.xserver.enable = true;
+  # services.xserver.desktopManager.xfce.enable = true;
+
   # --- Base packages (security tools come from Argos, not from here) ------
   environment.systemPackages = with pkgs; [
     # Basics
