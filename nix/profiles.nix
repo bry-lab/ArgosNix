@@ -19,10 +19,14 @@ let
     let path = splitString "." attr;
     in attrByPath path null pkgs;
 
-  # A tool contributes a package only if its attribute actually exists. Missing
-  # attributes are collected rather than thrown so `argos`/CI can report them.
+  # A tool contributes a package only if its attribute actually exists AND is
+  # not marked broken in nixpkgs. Both cases are collected rather than thrown,
+  # so `argos`/CI report them as gaps and a profile still builds without them.
+  # (The Python mirror cannot know nixpkgs' broken flags; the divergence is
+  # one-sided and shows up as "missing" in the banner, which is the intent.)
   toPackage = tool:
-    if tool.attr == null then null else resolveAttr tool.attr;
+    let p = if tool.attr == null then null else resolveAttr tool.attr;
+    in if p == null || (p.meta.broken or false) then null else p;
 
   normaliseProfile = name: raw: {
     inherit name;

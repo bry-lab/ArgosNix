@@ -87,6 +87,74 @@
         '';
       };
 
+      # `nix run .#load -- <profile>` -- the resilient installer. A profile
+      # environment is a single derivation, so one tool whose upstream build
+      # broke fails the whole `nix profile add ...#<profile>`. This installs a
+      # profile tool-by-tool through legacyPackages instead, skipping failures
+      # and reporting them at the end; `--remove` offloads the same way.
+      argosLoadFor = pkgs:
+        let
+          profiles = profilesFor pkgs;
+          attrsJson = pkgs.writeText "argos-profile-attrs.json" (builtins.toJSON
+            (lib.genAttrs profiles.names (name:
+              lib.filter (a: a != null) (map (t: t.attr) (profiles.toolsFor name)))));
+        in
+        pkgs.writeShellApplication {
+          name = "argos-load";
+          runtimeInputs = [ pkgs.jq ];
+          text = ''
+            flake="''${ARGOS_FLAKE:-github:bry-lab/ArgosNix}"
+            mode=add
+            wanted=()
+            while [ $# -gt 0 ]; do
+              case "$1" in
+                --remove) mode=remove ;;
+                --from) flake="$2"; shift ;;
+                *) wanted+=("$1") ;;
+              esac
+              shift
+            done
+            if [ "''${#wanted[@]}" -eq 0 ]; then
+              echo "usage: argos-load [--remove] [--from FLAKEREF] PROFILE..." >&2
+              echo "profiles: $(jq -r 'keys | join(" ")' ${attrsJson})" >&2
+              exit 2
+            fi
+
+            ok=0; failed=()
+            for p in "''${wanted[@]}"; do
+              if ! jq -e --arg p "$p" 'has($p)' ${attrsJson} >/dev/null; then
+                echo "unknown profile: $p" >&2; exit 2
+              fi
+              while IFS= read -r attr; do
+                if [ "$mode" = add ]; then
+                  echo ":: $attr"
+                  if nix profile add "$flake#$attr"; then
+                    ok=$((ok + 1))
+                  else
+                    echo ":: SKIPPED $attr (build or download failed)" >&2
+                    failed+=("$attr")
+                  fi
+                else
+                  # profile entries are named after the last attribute segment
+                  nix profile remove "''${attr##*.}" 2>/dev/null \
+                    && ok=$((ok + 1)) || true
+                fi
+              done < <(jq -r --arg p "$p" '.[$p][]' ${attrsJson})
+            done
+
+            echo
+            if [ "$mode" = add ]; then
+              echo "installed: $ok   skipped: ''${#failed[@]}"
+              if [ "''${#failed[@]}" -gt 0 ]; then
+                printf 'skipped: %s\n' "''${failed[@]}"
+                echo "(skipped tools are gaps, not fatal -- retry after the next update)"
+              fi
+            else
+              echo "removed: $ok"
+            fi
+          '';
+        };
+
     in
     {
       # -- the catalog itself, for downstream consumers ------------------
@@ -113,6 +181,13 @@
       };
 
       overlays.default = import ./overlays;
+
+      # The full package set the profiles resolve from, with the overlay and
+      # the unfree/insecure policy applied. Exposed so a single tool is
+      # addressable -- `nix profile add .#ghidra`, or dotted paths like
+      # `.#python3Packages.impacket` -- which is what `nix run .#load` uses to
+      # install profiles tool-by-tool.
+      legacyPackages = forAllSystems ({ pkgs, ... }: pkgs);
 
       # -- devShells: one per profile ------------------------------------
       devShells = forAllSystems ({ pkgs, ... }:
@@ -193,6 +268,11 @@
         {
           argos = app;
           default = app;
+          load = {
+            type = "app";
+            program = "${argosLoadFor pkgs}/bin/argos-load";
+            meta.description = "Install/remove a profile tool-by-tool, skipping broken tools";
+          };
         });
 
       # -- NixOS: the part that actually replaces a distro ----------------

@@ -110,6 +110,22 @@ nix profile wipe-history --older-than 7d   # drop old profile generations
 nix store gc                               # then collect the now-unused paths
 ```
 
+### If one tool in a set is broken upstream
+
+A profile environment is a single unit: when one tool's upstream build breaks,
+the whole `nix profile add …#revuln` fails with it. The loader installs a
+profile **tool-by-tool** instead — anything that fails to download or build is
+skipped and reported, and everything else lands:
+
+```sh
+nix run github:bry-lab/ArgosNix#load -- revuln            # add, skipping failures
+nix run github:bry-lab/ArgosNix#load -- --remove revuln   # offload the same set
+```
+
+Each tool becomes its own profile entry, so fine-grained offloading
+(`nix profile remove ghidra`) works too. Single tools are also directly
+addressable: `nix profile add github:bry-lab/ArgosNix#ghidra`.
+
 ## Nix hosts and non-Nix hosts
 
 Every command in this README is the same on every machine. The only variable is
