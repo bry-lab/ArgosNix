@@ -22,7 +22,7 @@
 #   then:  sudo nixos-rebuild switch --flake .#myhost
 #
 # If you would rather keep a plain base system and pull Argos tools ad hoc with
-# `nix profile install github:bry-lab/ArgosNix#<profile>`, simply delete the
+# `nix profile add github:bry-lab/ArgosNix#<profile>`, simply delete the
 # `programs.argos` block below -- nothing else here depends on it.
 { config, pkgs, ... }:
 
@@ -50,7 +50,7 @@ in
   # --- Argos: the security tooling ---------------------------------------
   # Everything security-related loads from here instead of being hand-listed.
   # Requires argos.nixosModules.argos to be imported (see the header). This is
-  # also where you get capabilities a plain `nix profile install` cannot grant:
+  # also where you get capabilities a plain `nix profile add` cannot grant:
   # raw sockets, monitor-mode drivers, udev rules.
   programs.argos = {
     enable = true;

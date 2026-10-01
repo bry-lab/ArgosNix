@@ -39,8 +39,8 @@ have `/etc/nixos/configuration.nix` and `/etc/nixos/hardware-configuration.nix`.
    case:
 
    ```sh
-   nix profile install github:bry-lab/ArgosNix#revuln   # reverse engineering
-   nix profile install github:bry-lab/ArgosNix#osint    # OSINT
+   nix profile add github:bry-lab/ArgosNix#revuln   # reverse engineering
+   nix profile add github:bry-lab/ArgosNix#osint    # OSINT
    nix profile list
    nix profile remove osint                             # offload one, keep the rest
    ```
@@ -52,7 +52,7 @@ flakes, automatic garbage collection, `nix-ld` (so prebuilt CTF binaries run),
 VM guest integration, and a small set of everyday CLI tools. (The desktop block
 in `configuration.nix` is easy to swap for Xfce/Plasma or comment out for a
 headless system.) **No security tools are installed by default** — you add them
-with `nix profile install` above, or uncomment the `programs.argos` block in
+with `nix profile add` above, or uncomment the `programs.argos` block in
 `configuration.nix` to bake a set in and get the capability layer (raw sockets,
 monitor mode, udev rules) that a user profile cannot grant.
 
