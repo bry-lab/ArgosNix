@@ -82,11 +82,21 @@ in
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
 
-  # --- Desktop (optional) --------------------------------------------------
-  # The base system is headless on purpose -- most of the tooling is
-  # terminal-first. Uncomment for a lightweight XFCE desktop:
-  # services.xserver.enable = true;
-  # services.xserver.desktopManager.xfce.enable = true;
+  # --- Desktop -------------------------------------------------------------
+  # MATE: light enough for a VM, nicer-looking than stock Xfce. Swap the
+  # desktopManager line for xfce.enable or plasma6 (see NixOS options) if you
+  # prefer; comment the block out entirely for a headless system.
+  services.xserver.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
+
+  # Unfree packages, allowed by name only -- never blanket. vscode is why this
+  # exists; the others are the unfree tools Argos profiles can pull in when you
+  # enable programs.argos with the dfir/malware profiles.
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode"
+      "volatility3" "obsidian" "wpscan" "waybackurls"
+    ];
 
   # --- Base packages (security tools come from Argos, not from here) ------
   environment.systemPackages = with pkgs; [
@@ -96,6 +106,10 @@ in
     # Networking basics
     net-tools        # ifconfig, netstat, route
     dnsutils         # dig, nslookup
+
+    # Desktop apps
+    librewolf        # hardened Firefox fork
+    vscode           # unfree -- allowed by the predicate above
 
     # Fun
     hollywood

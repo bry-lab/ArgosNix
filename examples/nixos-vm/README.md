@@ -47,9 +47,11 @@ have `/etc/nixos/configuration.nix` and `/etc/nixos/hardware-configuration.nix`.
 
 ## What you get
 
-A working, networked base system with flakes, automatic garbage collection,
-`nix-ld` (so prebuilt CTF binaries run), VM guest integration, and a small set of
-everyday CLI tools. **No security tools are installed by default** — you add them
+A working, networked base system with a MATE desktop, LibreWolf and VS Code,
+flakes, automatic garbage collection, `nix-ld` (so prebuilt CTF binaries run),
+VM guest integration, and a small set of everyday CLI tools. (The desktop block
+in `configuration.nix` is easy to swap for Xfce/Plasma or comment out for a
+headless system.) **No security tools are installed by default** — you add them
 with `nix profile install` above, or uncomment the `programs.argos` block in
 `configuration.nix` to bake a set in and get the capability layer (raw sockets,
 monitor mode, udev rules) that a user profile cannot grant.
