@@ -83,11 +83,11 @@ in
   services.qemuGuest.enable = true;
 
   # --- Desktop -------------------------------------------------------------
-  # MATE: light enough for a VM, nicer-looking than stock Xfce. Swap the
-  # desktopManager line for xfce.enable or plasma6 (see NixOS options) if you
-  # prefer; comment the block out entirely for a headless system.
+  # Cinnamon: polished out of the box and still comfortable in a 4 GB VM. Swap
+  # the desktopManager line for mate.enable or xfce.enable for something
+  # lighter; comment the block out entirely for a headless system.
   services.xserver.enable = true;
-  services.xserver.desktopManager.mate.enable = true;
+  services.xserver.desktopManager.cinnamon.enable = true;
 
   # Unfree packages, allowed by name only -- never blanket. vscode is why this
   # exists; the others are the unfree tools Argos profiles can pull in when you
