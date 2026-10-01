@@ -18,14 +18,21 @@ have `/etc/nixos/configuration.nix` and `/etc/nixos/hardware-configuration.nix`.
    sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples/nixos-vm/configuration.nix
    ```
 
-2. Edit `configuration.nix`: set `username`, set `system.stateVersion` to the
-   output of `nixos-version`, and — only if your VM is legacy BIOS rather than
-   UEFI — switch the boot loader (see the comment in the Boot section).
+2. Edit `configuration.nix`: set `username`, and set `system.stateVersion` to
+   the output of `nixos-version`. The boot loader needs no edit — UEFI vs
+   legacy BIOS is detected from your `hardware-configuration.nix` and the right
+   loader (systemd-boot or GRUB) is selected automatically.
 
 3. Build it:
 
    ```sh
    sudo nixos-rebuild switch --flake /etc/nixos#argos-vm
+   ```
+
+   On an ARM VM (e.g. UTM on an M-series Mac), use the aarch64 system instead:
+
+   ```sh
+   sudo nixos-rebuild switch --flake /etc/nixos#argos-vm-aarch64
    ```
 
 4. Reboot, log in, change your password (`passwd`), then install tools per use
@@ -49,24 +56,26 @@ monitor mode, udev rules) that a user profile cannot grant.
 
 ## Troubleshooting
 
-### `efiSysMountPoint = '/boot' is not a mounted partition` / `Failed to install bootloader`
+### `Failed to install bootloader` on a legacy-BIOS VM
 
-The config defaults to `systemd-boot`, which is UEFI-only. This error means your
-VM boots **legacy BIOS**, so you need GRUB instead. Confirm, then switch loaders:
+The boot loader is auto-selected: a UEFI machine (vfat ESP at `/boot` or
+`/boot/efi` in your `hardware-configuration.nix`) gets systemd-boot, anything
+else gets GRUB. The one assumption left is the **disk GRUB installs to**, which
+defaults to `/dev/vda` (the virtio disk used by QEMU/KVM/libvirt/UTM). If your
+BIOS VM uses SATA/IDE instead (VirtualBox, VMware, older QEMU), override it in
+`configuration.nix`:
 
 ```sh
-[ -d /sys/firmware/efi ] && echo UEFI || echo BIOS   # BIOS = use grub
-lsblk                                                 # find the disk (vda/sda)
+lsblk        # find the whole disk: sda? vda?
 ```
-
-In `configuration.nix`, comment the two `systemd-boot`/`efi` lines and enable:
 
 ```nix
-boot.loader.grub.enable = true;
-boot.loader.grub.device = "/dev/vda";   # the whole disk from lsblk
+boot.loader.grub.device = "/dev/sda";
 ```
 
-then rebuild.
+then rebuild. (If you see `efiSysMountPoint ... is not a mounted partition`, you
+are on an older copy of this config that hard-coded systemd-boot — pull the
+current one.)
 
 ### `systemd-run: unrecognized option '--output=cat'`
 

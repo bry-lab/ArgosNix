@@ -20,22 +20,34 @@
 # nix-ld, VM guest integration) with the Argos module available. It installs NO
 # security tools by default -- you add those with `nix profile install`, or flip
 # on the declarative block at the bottom to bake a set in (and get capabilities).
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   username = "hacker";   # <-- your login name
   keepDays = 7;          # garbage-collect generations older than this
+
+  # Detect firmware from the hardware config the installer generated: a UEFI
+  # system mounts an EFI system partition (vfat) at /boot or /boot/efi, a BIOS
+  # system does not. This is what lets one configuration.nix boot on both.
+  bootIsUEFI =
+    (config.fileSystems ? "/boot" && config.fileSystems."/boot".fsType == "vfat")
+    || (config.fileSystems ? "/boot/efi" && config.fileSystems."/boot/efi".fsType == "vfat");
 in
 {
-  # --- Boot ---------------------------------------------------------------
-  # Default: UEFI, which covers most modern VMs (QEMU/OVMF, UTM, VMware, and
-  # VirtualBox with EFI enabled).
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  # Legacy BIOS VM instead? Comment the two lines above and use these, pointing
-  # `device` at the VM's disk (often /dev/vda or /dev/sda):
-  #   boot.loader.grub.enable = true;
-  #   boot.loader.grub.device = "/dev/vda";
+  # --- Boot (auto-selected: UEFI -> systemd-boot, BIOS -> GRUB) -----------
+  # Chosen from bootIsUEFI above, so this same file works on a UEFI VM and a
+  # legacy-BIOS VM with no edits. All of these are mkDefault, so you can still
+  # override any of them for an unusual setup.
+  boot.loader.systemd-boot.enable = lib.mkDefault bootIsUEFI;
+  boot.loader.efi.canTouchEfiVariables = lib.mkDefault bootIsUEFI;
+  boot.loader.efi.efiSysMountPoint =
+    lib.mkDefault (if config.fileSystems ? "/boot/efi" then "/boot/efi" else "/boot");
+
+  boot.loader.grub.enable = lib.mkDefault (!bootIsUEFI);
+  # BIOS only: the disk GRUB installs its boot record to. Defaults to the virtio
+  # disk most VMs use (QEMU/KVM/libvirt/UTM). If your BIOS VM uses SATA/IDE
+  # (VirtualBox, VMware, older QEMU) this is /dev/sda -- confirm with `lsblk`.
+  boot.loader.grub.device = lib.mkDefault "/dev/vda";
 
   # --- Nix ----------------------------------------------------------------
   nix.settings = {
