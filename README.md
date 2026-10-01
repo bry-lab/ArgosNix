@@ -177,6 +177,26 @@ Two ready-made configs ship with the repo:
 - [examples/configuration.nix](examples/configuration.nix) — a **partial module**
   to compose into an existing system you already run.
 
+### Fresh NixOS VM, start to finish
+
+```sh
+cd /etc/nixos
+# copy the two files in (keep your generated hardware-configuration.nix)
+sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples/nixos-vm/flake.nix
+sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples/nixos-vm/configuration.nix
+
+# edit: set your username and stateVersion (see: nixos-version)
+sudo nixos-rebuild switch --flake /etc/nixos#argos-vm
+
+# then install tools per use case, and offload them when done:
+nix profile install github:bry-lab/ArgosNix#revuln
+nix profile install github:bry-lab/ArgosNix#osint
+nix profile remove osint          # offload one, keep the rest
+```
+
+Keep the `hardware-configuration.nix` the installer generated — it holds your
+disk layout and is the one file the repo cannot ship for you.
+
 ## Binary cache
 
 A binary cache is strongly recommended before building large profiles from
