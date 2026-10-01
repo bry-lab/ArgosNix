@@ -12,13 +12,13 @@
 #      the boot loader (see the Boot section).
 #   3. sudo nixos-rebuild switch --flake /etc/nixos#argos-vm
 #   4. Install whatever you need, per use case, and remove it when done:
-#        nix profile install github:bry-lab/ArgosNix#revuln
-#        nix profile install github:bry-lab/ArgosNix#osint
+#        nix profile add github:bry-lab/ArgosNix#revuln
+#        nix profile add github:bry-lab/ArgosNix#osint
 #        nix profile remove osint
 #
 # This boots to a working base system (networking, a user, flakes, automatic GC,
 # nix-ld, VM guest integration) with the Argos module available. It installs NO
-# security tools by default -- you add those with `nix profile install`, or flip
+# security tools by default -- you add those with `nix profile add`, or flip
 # on the declarative block at the bottom to bake a set in (and get capabilities).
 { config, pkgs, lib, ... }:
 
@@ -118,7 +118,7 @@ in
   ];
 
   # --- Optional: bake an Argos set into the system ------------------------
-  # Leave this off and install per use case with `nix profile install
+  # Leave this off and install per use case with `nix profile add
   # ...#<profile>`. Turn it on to install a set declaratively AND get the
   # capabilities a user profile cannot grant: raw sockets, monitor mode, udev.
   # programs.argos = {

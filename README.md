@@ -5,7 +5,7 @@ as Nix profiles you can install anywhere, all in one place
 
 ```sh
 nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
-nix profile install github:bry-lab/ArgosNix#network
+nix profile add github:bry-lab/ArgosNix#network
 nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 ```
 
@@ -87,12 +87,12 @@ present across shells and reboots until you remove them — use `nix profile`. I
 takes Argos profiles and plain nixpkgs packages side by side:
 
 ```sh
-# install (load) — stays until you remove it
-nix profile install github:bry-lab/ArgosNix#revuln
-nix profile install nixpkgs#nmap nixpkgs#gdb nixpkgs#ghidra
+# add (load) — stays until you remove it
+nix profile add github:bry-lab/ArgosNix#revuln
+nix profile add nixpkgs#nmap nixpkgs#gdb nixpkgs#ghidra
 
 # whole Argos sets stack and de-duplicate against each other
-nix profile install github:bry-lab/ArgosNix#osint github:bry-lab/ArgosNix#webapp
+nix profile add github:bry-lab/ArgosNix#osint github:bry-lab/ArgosNix#webapp
 
 nix profile list             # see what's installed
 nix profile remove ghidra    # remove (offload) one, by name from the list
@@ -173,7 +173,7 @@ Two ready-made configs ship with the repo:
 - [examples/nixos-vm/](examples/nixos-vm/) — a **complete drop-in system** for a
   fresh NixOS VM. Copy two files in, keep your generated
   `hardware-configuration.nix`, `nixos-rebuild switch`, then
-  `nix profile install …#<profile>` per use case.
+  `nix profile add …#<profile>` per use case.
 - [examples/configuration.nix](examples/configuration.nix) — a **partial module**
   to compose into an existing system you already run.
 
@@ -189,8 +189,8 @@ sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples
 sudo nixos-rebuild switch --flake /etc/nixos#argos-vm
 
 # then install tools per use case, and offload them when done:
-nix profile install github:bry-lab/ArgosNix#revuln
-nix profile install github:bry-lab/ArgosNix#osint
+nix profile add github:bry-lab/ArgosNix#revuln
+nix profile add github:bry-lab/ArgosNix#osint
 nix profile remove osint          # offload one, keep the rest
 ```
 
