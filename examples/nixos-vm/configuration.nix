@@ -23,7 +23,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  username = "hacker";   # <-- your login name
+  username = "analyst";  # <-- your login name
   keepDays = 7;          # garbage-collect generations older than this
 
   # Detect firmware from the hardware config the installer generated: a UEFI
