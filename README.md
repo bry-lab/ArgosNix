@@ -1,9 +1,6 @@
 # Argos
 
-A curated catalog of security tooling — deduplicated by where the code actually
-lives, organised by what you are actually trying to do, and delivered as Nix
-profiles you can install anywhere, pin per engagement, and rebuild byte-for-byte
-in two years.
+A catalog of security tools organized into categories and packed and delivered as Nix profiles you can install anywhere, all in one place
 
 ```sh
 nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
