@@ -47,7 +47,7 @@ have `/etc/nixos/configuration.nix` and `/etc/nixos/hardware-configuration.nix`.
 
 ## What you get
 
-A working, networked base system with a MATE desktop, LibreWolf and VS Code,
+A working, networked base system with a Cinnamon desktop, LibreWolf and VS Code,
 flakes, automatic garbage collection, `nix-ld` (so prebuilt CTF binaries run),
 VM guest integration, and a small set of everyday CLI tools. (The desktop block
 in `configuration.nix` is easy to swap for Xfce/Plasma or comment out for a
