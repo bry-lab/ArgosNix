@@ -46,3 +46,41 @@ everyday CLI tools. **No security tools are installed by default** — you add t
 with `nix profile install` above, or uncomment the `programs.argos` block in
 `configuration.nix` to bake a set in and get the capability layer (raw sockets,
 monitor mode, udev rules) that a user profile cannot grant.
+
+## Troubleshooting
+
+### `efiSysMountPoint = '/boot' is not a mounted partition` / `Failed to install bootloader`
+
+The config defaults to `systemd-boot`, which is UEFI-only. This error means your
+VM boots **legacy BIOS**, so you need GRUB instead. Confirm, then switch loaders:
+
+```sh
+[ -d /sys/firmware/efi ] && echo UEFI || echo BIOS   # BIOS = use grub
+lsblk                                                 # find the disk (vda/sda)
+```
+
+In `configuration.nix`, comment the two `systemd-boot`/`efi` lines and enable:
+
+```nix
+boot.loader.grub.enable = true;
+boot.loader.grub.device = "/dev/vda";   # the whole disk from lsblk
+```
+
+then rebuild.
+
+### `systemd-run: unrecognized option '--output=cat'`
+
+Seen on VMs whose base image ships an **old systemd** that the newer
+`nixos-rebuild` activation wrapper does not support. The build still succeeds; only
+the activation wrapper fails. Build without activating, then activate the result
+directly and reboot:
+
+```sh
+cd /etc/nixos
+sudo nixos-rebuild build --flake /etc/nixos#argos-vm
+sudo NIXOS_INSTALL_BOOTLOADER=1 ./result/bin/switch-to-configuration boot
+sudo reboot
+```
+
+After rebooting into the new system (which has a current systemd), the normal
+`sudo nixos-rebuild switch --flake /etc/nixos#argos-vm` works from then on.
