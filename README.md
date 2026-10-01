@@ -52,6 +52,7 @@ modules/          NixOS + home-manager: capabilities, drivers, udev
 images/           live ISO / VM / qcow definitions
 tools/argos/      the CLI: importers, validation, coverage
 templates/        per-engagement scaffold
+examples/         a ready-to-copy NixOS configuration.nix
 ```
 
 **Nothing hand-lists packages in a `.nix` file.** Edit `catalog/`, and the
@@ -179,6 +180,10 @@ programs.argos = {
 On non-NixOS Linux you get the binaries and not the capabilities. The shell
 tells you which tools are affected rather than letting you find out
 mid-engagement.
+
+A complete, copy-ready base system that wires this up — Nix settings, automatic
+garbage collection, VM guest niceties and the `programs.argos` block above —
+lives in [examples/configuration.nix](examples/configuration.nix).
 
 ## Binary cache
 
