@@ -82,8 +82,8 @@
       "tools": 3
     },
     "reverse-engineering": {
-      "packaged": 14,
-      "percent": 100.0,
+      "packaged": 13,
+      "percent": 92.9,
       "tools": 14
     },
     "utilities": {
@@ -147,12 +147,12 @@
       "unique": 0
     }
   },
-  "packaged": 124,
-  "percent": 90.5,
+  "packaged": 123,
+  "percent": 89.8,
   "tiers": {
-    "1": 123,
+    "1": 122,
     "2": 6,
-    "3": 5,
+    "3": 6,
     "4": 3
   },
   "total": 137

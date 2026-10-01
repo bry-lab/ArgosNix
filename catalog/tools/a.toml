@@ -23,8 +23,14 @@ upstream = "https://github.com/angr/angr"
 description = "Binary analysis and symbolic execution."
 license = "BSD-2-Clause"
 categories = ["reverse-engineering"]
-tier = 1
-nixpkgs = "python3Packages.angr"
+# Normally tier 1; parked at tier 3 while the nixpkgs build is broken (below).
+tier = 3
+# 2026-10-01: python3Packages.angr (9.2.193) fails to build in nixpkgs-unstable
+# ("angr requires setuptools-rust to build") -- confirmed on upstream HEAD, so a
+# lock bump does not help. Attribute un-claimed so the profiles that include it
+# still build and report angr as a gap. Restore when nixpkgs fixes it:
+# nixpkgs = "python3Packages.angr"
+notes = "Temporarily unpackaged: nixpkgs build is broken (setuptools-rust); see comment."
 
 [apktool]
 upstream = "https://github.com/iBotPeaches/Apktool"
