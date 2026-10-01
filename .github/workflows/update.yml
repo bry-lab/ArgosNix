@@ -1,0 +1,49 @@
+name: update
+
+# Weekly flake.lock bump, delivered as a PR so the ci workflow's
+# profiles-build matrix gates it: security tooling wants to be current, but a
+# blind update is how an angr-style upstream breakage reaches users. Fresh AND
+# safe means: bot proposes, CI builds every profile, a human merges green.
+#
+# Two one-time repo settings make this hands-off:
+#   1. Settings -> Actions -> General -> Workflow permissions:
+#      enable "Allow GitHub Actions to create and approve pull requests".
+#   2. (Optional but recommended) add a FLAKE_UPDATE_TOKEN secret containing a
+#      fine-grained PAT with contents+pull-requests write. PRs opened with the
+#      default GITHUB_TOKEN do not trigger other workflows, so without the PAT
+#      you must close-and-reopen the bot's PR once to start CI on it.
+
+on:
+  schedule: [{ cron: "0 6 * * 1" }] # Mondays, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  flake-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - uses: DeterminateSystems/update-flake-lock@v24
+        with:
+          token: ${{ secrets.FLAKE_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
+          branch: automation/flake-lock
+          pr-title: "deps: weekly flake.lock update"
+          pr-labels: automation
+          commit-msg: "deps: update flake.lock"
+          pr-body: |
+            Weekly automated bump of the flake inputs (nixpkgs and friends).
+
+            Merge only when the `profiles-build` matrix is green -- it builds
+            every profile environment, which is what catches an upstream tool
+            whose build broke (the angr incident) before a user's
+            `nix profile add` does.
+
+            If no CI checks appear on this PR, the repo has no
+            FLAKE_UPDATE_TOKEN secret: close and reopen the PR to trigger them.
