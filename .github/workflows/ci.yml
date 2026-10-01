@@ -59,6 +59,50 @@ jobs:
             echo "::endgroup::"
           done
 
+  # The matrix below is generated from catalog/profiles.toml so a new profile
+  # is covered automatically. `full` is the union of everything and does not
+  # fit on a 14GB GitHub runner; it stays with the nightly builder.
+  profile-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      profiles: ${{ steps.list.outputs.profiles }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json, pathlib, tomllib
+          names = [n for n in tomllib.loads(
+              pathlib.Path("catalog/profiles.toml").read_text()) if n != "full"]
+          print("profiles=" + json.dumps(sorted(names)))
+          EOF
+
+  profiles-build:
+    # Build every profile environment -- the artifact users actually install.
+    # Evaluation alone does not catch a tool whose *build* broke upstream, and
+    # one broken tool fails the whole environment at `nix profile add` time, in
+    # front of a user. This is the gate the weekly flake.lock bump must pass.
+    #
+    # When a binary cache secret lands, add cachix/cachix-action here so these
+    # builds also populate the cache instead of being thrown away.
+    runs-on: ubuntu-latest
+    needs: [profile-matrix, eval]
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{ fromJSON(needs.profile-matrix.outputs.profiles) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - name: free runner disk
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
+      - name: build ${{ matrix.profile }}
+        run: nix build ".#${{ matrix.profile }}" --no-link --print-build-logs
+
   build:
     # Real builds do not fit on GitHub runners once the catalog grows -- a full
     # profile is tens of GB. This job builds only what a PR changed; the
