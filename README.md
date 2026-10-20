@@ -13,8 +13,8 @@ nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 
 ## Quick Start
 
-1. Install Nix on your distribution of choice (see [Installing Nix](#installing-nix)).
-2. To install a profile that persists across shells and reboots, run:
+0. Install Nix on your distribution of choice (see [Installing Nix](#installing-nix)), skip to step 1 if on NixOS machine.
+1. To install a profile that persists across shells and reboots, run:
 
    ```sh
    nix profile add github:bry-lab/ArgosNix#<profile>
@@ -26,13 +26,13 @@ nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
    nix develop github:bry-lab/ArgosNix#<profile>
    ```
 
-3. To check which profiles and packages are currently installed:
+2. To check which profiles and packages are currently installed:
 
    ```sh
    nix profile list
    ```
 
-4. To offload a profile, using its name from the list:
+3. To offload a profile, using its name from the list:
 
    ```sh
    nix profile remove <profile>
