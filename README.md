@@ -1,4 +1,4 @@
-WIP
+## WIP
 
 # ArgosNix
 
@@ -9,6 +9,52 @@ as Nix profiles you can install anywhere.
 nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
 nix profile add github:bry-lab/ArgosNix#network
 nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
+```
+
+## Quick Start
+
+1. Install Nix on your distribution of choice (see [Installing Nix](#installing-nix)).
+2. To install a profile that persists across shells and reboots, run:
+
+   ```sh
+   nix profile add github:bry-lab/ArgosNix#<profile>
+   ```
+
+   Or, to try a profile in a throwaway shell that leaves nothing behind:
+
+   ```sh
+   nix develop github:bry-lab/ArgosNix#<profile>
+   ```
+
+3. To check which profiles and packages are currently installed:
+
+   ```sh
+   nix profile list
+   ```
+
+4. To offload a profile, using its name from the list:
+
+   ```sh
+   nix profile remove <profile>
+   ```
+
+**Note:** offloading a profile does not free up disk space on its own. Nix keeps
+old profile versions around for rollbacks. To reclaim the space, clear out
+history older than 7 days (recommended), then collect the unused files:
+
+```sh
+nix profile wipe-history --older-than 7d
+nix store gc
+```
+
+**Available profiles:** `osint`, `webapp`, `ad`, `redteam`, `dfir`, `malware`,
+`revuln`, `cloud`, `mobile`, `wireless`, `radio`, `crypto`, `defense`, `ctf`,
+`full`
+
+To see what a profile contains, including any tools not yet packaged:
+
+```sh
+nix run github:bry-lab/ArgosNix#argos -- profile <profile> --all
 ```
 
 ## Status — read this before relying on it
