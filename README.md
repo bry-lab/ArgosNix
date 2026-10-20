@@ -1,7 +1,9 @@
-# Argos
+WIP
 
-A catalog of security tools organized into categories and packed and delivered 
-as Nix profiles you can install anywhere, all in one place
+# ArgosNix
+
+A catalog of security tools, organized by what you're trying to do and delivered
+as Nix profiles you can install anywhere.
 
 ```sh
 nix develop github:bry-lab/ArgosNix#osint      # or #webapp, #ad, #dfir, #malware…
@@ -11,11 +13,10 @@ nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 
 ## Status — read this before relying on it
 
-This is honest about what it is. See [docs/COVERAGE.md](docs/COVERAGE.md), which
-is regenerated nightly:
+See [docs/COVERAGE.md](docs/COVERAGE.md), which is regenerated nightly:
 
 - Every tool in the catalog is mapped to its upstream and deduplicated by where
-  the code lives. **That mapping is useful on its own.**
+  the code lives. That mapping is useful on its own.
 - Roughly a quarter of the catalog is already in nixpkgs and works today.
 - The rest is a packaging backlog, tiered by difficulty. `argos missing --tier 2`
   is the contributor queue.
@@ -23,10 +24,46 @@ is regenerated nightly:
   licensed and not redistributable. They are catalogued as tier 4 with a note,
   so the coverage number stays honest.
 
-**It is not complete today.** It is production-ready for specific profiles now
-and more of them each month, and you can always see exactly what is missing.
+**It is not complete today.** Specific profiles are ready to use now, more are
+added each month, and you can always see exactly what is missing.
 
-## How it is organised
+## Nix and NixOS
+
+Nix is a package manager that can be installed on any Linux distribution as well
+as macOS and WSL. NixOS is a Linux distribution built on top of the Nix package
+manager, much like how Debian Linux is built on top of `dpkg` and `apt`. Nix's
+core functionality goes much further than being just a package manager; it can
+even declaratively define whole system configurations. Argos itself targets
+Linux.
+
+Every command for loading and using tools works the same on any machine with Nix
+installed and flakes enabled. Nothing here uses your system package manager, and
+nothing needs root beyond installing Nix itself. A machine running Ubuntu,
+Debian, Fedora, Arch, or WSL2 gets the same tools at the same versions as a
+native NixOS machine. The one difference is privileges, covered in
+[The capability problem](#the-capability-problem).
+
+### Installing Nix
+
+If Nix isn't installed yet, pick one:
+
+```sh
+# Determinate Systems installer — recommended, enables flakes out of the box:
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+# ...or the official installer, then enable flakes yourself:
+sh <(curl -L https://nixos.org/nix/install) --daemon
+mkdir -p ~/.config/nix
+echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+```
+
+Open a new shell after installing, and you're ready.
+
+This README uses `nix profile add`, the current name for what older Nix versions
+call `nix profile install`. If `add` isn't recognized, use `install` instead, or
+update Nix.
+
+## How ArgosNix is organized
 
 ```
 catalog/          the source of truth: tools, taxonomy, profiles (TOML)
@@ -42,13 +79,9 @@ templates/        per-engagement scaffold
 examples/         ready-to-copy configs (a full VM system, and a module)
 ```
 
-**Nothing hand-lists packages in a `.nix` file.** Edit `catalog/`, and the
-flake follows. If you find yourself editing a package list in Nix, the tooling
-has failed and that is a bug.
-
 ### Categories vs profiles
 
-Categories are how the catalog is organised (`web`, `active-directory`,
+Categories are how the catalog is organized (`web`, `active-directory`,
 `malware-analysis`, …). Profiles are how you use it — `osint`, `webapp`, `ad`,
 `redteam`, `dfir`, `malware`, `revuln`, `cloud`, `mobile`, `wireless`, `radio`,
 `crypto`, `defense`, `ctf`, `full`. A profile composes categories, so OSINT and
@@ -82,12 +115,11 @@ with `.` when you are inside a local clone (`nix develop .#dfir`).
 
 ### Keeping tools around: `nix profile` as a package manager
 
-If you want tools installed the way a normal package manager installs them —
-present across shells and reboots until you remove them — use `nix profile`. It
-takes Argos profiles and plain nixpkgs packages side by side:
+If you want tools installed the way a normal package manager installs them,
+persistent across shells and reboots until you remove them, use `nix profile`.
 
 ```sh
-# add (load) — stays until you remove it
+# add (load): stays until you remove it
 nix profile add github:bry-lab/ArgosNix#revuln
 nix profile add nixpkgs#nmap nixpkgs#gdb nixpkgs#ghidra
 
@@ -101,48 +133,15 @@ nix profile rollback         # undo the last change if something breaks
 ```
 
 One catch: removing a tool does not free disk space immediately. Nix keeps a
-history of old profile versions — that is what makes `rollback` work — and the
-store's automatic cleanup will not touch anything still referenced by that
-history. To actually reclaim the space:
+history of old profile versions for rollbacks, and the store's automatic cleanup
+will not touch anything still referenced by that history.
+
+To actually reclaim the space:
 
 ```sh
 nix profile wipe-history --older-than 7d   # drop old profile generations
 nix store gc                               # then collect the now-unused paths
 ```
-
-## Nix hosts and non-Nix hosts
-
-Every command in this README is the same on every machine. The only variable is
-whether Nix — and NixOS — is already there. Nothing here uses your system package
-manager, and nothing needs root beyond installing Nix itself.
-
-| Your host | What you do | What you get |
-| --- | --- | --- |
-| **NixOS** | The module (below), or the same `nix develop` / `profile` commands | Everything, including capabilities: `security.wrappers`, drivers, udev |
-| **Any other Linux with Nix** | The exact commands above | Binaries + reproducibility; capabilities degrade to `sudo`/`setcap` |
-| **Any Linux without Nix** | Install Nix once (below), then you *are* a Nix host | Same as the row above — identical commands, identical results |
-
-So a laptop running Ubuntu, Debian, Fedora, Arch (or WSL) uses Argos exactly the
-way a native NixOS box does — install Nix, then run the same lines. You do not
-convert your machine to NixOS and you do not install tools into your OS.
-
-```sh
-# Turn a non-Nix Linux host into a Nix host (pick one):
-
-# Determinate Systems installer — recommended, enables flakes out of the box:
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-
-# ...or the official installer, then enable flakes yourself:
-sh <(curl -L https://nixos.org/nix/install) --daemon
-mkdir -p ~/.config/nix
-echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
-```
-
-Open a new shell after installing, and `nix develop github:bry-lab/ArgosNix#osint`
-behaves the same on Ubuntu as it does on NixOS.
-
-On NixOS you additionally get the module, which is the one thing a plain
-`nix develop` cannot do — see below.
 
 ## The capability problem
 
@@ -164,9 +163,9 @@ programs.argos = {
 };
 ```
 
-On non-NixOS Linux you get the binaries and not the capabilities. The shell
-tells you which tools are affected rather than letting you find out
-mid-engagement.
+On non-NixOS Linux you get the binaries and not the capabilities; grant them
+yourself with `sudo` or `setcap` where needed. The shell tells you which tools
+are affected rather than letting you find out mid-engagement.
 
 Two ready-made configs ship with the repo:
 
@@ -181,11 +180,15 @@ Two ready-made configs ship with the repo:
 
 ```sh
 cd /etc/nixos
+# back up the generated config first; it holds your stateVersion
+sudo cp configuration.nix configuration.nix.bak
+
 # copy the two files in (keep your generated hardware-configuration.nix)
 sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples/nixos-vm/flake.nix
 sudo curl -L -O https://raw.githubusercontent.com/bry-lab/ArgosNix/main/examples/nixos-vm/configuration.nix
 
-# edit: set your username and stateVersion (see: nixos-version)
+# edit configuration.nix: set your username, and copy system.stateVersion
+# from configuration.nix.bak
 sudo nixos-rebuild switch --flake /etc/nixos#argos-vm
 
 # then install tools per use case, and offload them when done:
