@@ -13,7 +13,7 @@ nix build github:bry-lab/ArgosNix#iso          # a live system, not just a shell
 
 ## Quick Start
 
-0. Install Nix on your distribution of choice (see [Installing Nix](#installing-nix)), skip to step 1 if on NixOS machine.
+0. Install Nix on your distribution of choice (see [Installing Nix](#installing-nix)). Skip to step 1 if you're on a NixOS machine.
 1. To install a profile that persists across shells and reboots, run:
 
    ```sh
@@ -47,9 +47,8 @@ nix profile wipe-history --older-than 7d
 nix store gc
 ```
 
-**Available profiles:** `osint`, `webapp`, `ad`, `redteam`, `dfir`, `malware`,
-`revuln`, `cloud`, `mobile`, `wireless`, `radio`, `crypto`, `defense`, `ctf`,
-`full`
+**Available profiles:** `osint`, `webapp`, `network`, `ad`, `wireless`, `radio`, `redteam`, `malware`,
+`revuln`, `dfir`, `cloud`, `mobile`, `crypto`, `defense`, `ctf`, `full`
 
 To see what a profile contains, including any tools not yet packaged:
 
@@ -63,29 +62,23 @@ See [docs/COVERAGE.md](docs/COVERAGE.md), which is regenerated nightly:
 
 - Every tool in the catalog is mapped to its upstream and deduplicated by where
   the code lives. That mapping is useful on its own.
-- Roughly a quarter of the catalog is already in nixpkgs and works today.
 - The rest is a packaging backlog, tiered by difficulty. `argos missing --tier 2`
   is the contributor queue.
-- Some tools will never be here: Burp Pro, Cobalt Strike, Nessus and friends are
-  licensed and not redistributable. They are catalogued as tier 4 with a note,
+- Some tools will Burp Pro, Cobalt Strike, Nessus and friends are licensed and not 
+- redistributable therefore, they will not be included in ArgosNix. They are catalogued as tier 4 with a note,
   so the coverage number stays honest.
 
-**It is not complete today.** Specific profiles are ready to use now, more are
-added each month, and you can always see exactly what is missing.
-
-## Nix and NixOS
+## Nix and NixOS Background Information
 
 Nix is a package manager that can be installed on any Linux distribution as well
 as macOS and WSL. NixOS is a Linux distribution built on top of the Nix package
 manager, much like how Debian Linux is built on top of `dpkg` and `apt`. Nix's
 core functionality goes much further than being just a package manager; it can
-even declaratively define whole system configurations. Argos itself targets
-Linux.
+even declaratively define whole system configurations.
 
-Every command for loading and using tools works the same on any machine with Nix
-installed and flakes enabled. Nothing here uses your system package manager, and
-nothing needs root beyond installing Nix itself. A machine running Ubuntu,
-Debian, Fedora, Arch, or WSL2 gets the same tools at the same versions as a
+Every nix command works the same on any machine with Nix installed and flakes 
+enabled and nothing here uses your system package manager. A machine running 
+Ubuntu, Debian, Fedora, Arch, or WSL2 gets the same tools at the same versions as a
 native NixOS machine. The one difference is privileges, covered in
 [The capability problem](#the-capability-problem).
 
@@ -112,10 +105,10 @@ update Nix.
 ## How ArgosNix is organized
 
 ```
-catalog/          the source of truth: tools, taxonomy, profiles (TOML)
-  tools/*.toml    one entry per tool, sharded by first letter
+catalog/          toml files that lists and/or organizes the tools
+  tools/*.toml    tools listed out in toml files in alphabetical order
   taxonomy.toml   ~20 categories, ours, mapped from upstream groups
-  profiles.toml   what a profile contains
+  profiles.toml   what each profile contains
 nix/              reads the catalog, generates everything
 pkgs/by-name/     derivations for tools nixpkgs lacks
 modules/          NixOS + home-manager: capabilities, drivers, udev
@@ -128,10 +121,10 @@ examples/         ready-to-copy configs (a full VM system, and a module)
 ### Categories vs profiles
 
 Categories are how the catalog is organized (`web`, `active-directory`,
-`malware-analysis`, …). Profiles are how you use it — `osint`, `webapp`, `ad`,
-`redteam`, `dfir`, `malware`, `revuln`, `cloud`, `mobile`, `wireless`, `radio`,
-`crypto`, `defense`, `ctf`, `full`. A profile composes categories, so OSINT and
-web testing share their recon tooling instead of two lists drifting apart.
+`malware-analysis`, …). Profiles are how you use it (Ex: osint`, `webapp`, `network`, 
+`ad`, `wireless`, `radio`, `redteam`, `malware`, `revuln`, `dfir`, `cloud`, `mobile`, 
+`crypto`, `defense`, `ctf`, `full`). A profile is composed of one or more categories, 
+so OSINT and web testing share their recon tooling instead of two lists drifting apart.
 
 ```sh
 nix run .#argos -- profile              # every profile and its coverage
@@ -246,65 +239,8 @@ nix profile remove osint          # offload one, keep the rest
 Keep the `hardware-configuration.nix` the installer generated — it holds your
 disk layout and is the one file the repo cannot ship for you.
 
-## Binary cache
-
-A binary cache is strongly recommended before building large profiles from
-source — that can take hours and tens of gigabytes. The good news is that
-`cache.nixos.org` already covers the tier-1 tools (most of the catalog), so many
-profiles need no extra setup at all.
-
-Argos's own derivations — the tools nixpkgs lacks — are not yet served from a
-public cache. When you have one, point at it like this (substitute your real URL
-and key):
-
-```nix
-nix.settings = {
-  substituters = [ "https://cache.nixos.org" "https://YOUR-CACHE.cachix.org" ];
-  trusted-public-keys = [ "YOUR-CACHE.cachix.org-1:YOUR-PUBLIC-KEY" ];
-};
-```
-
-Unfree packages are never pushed to a cache. You build those yourself, which is
-the price of them being unfree.
-
-## Per-engagement pinning
-
-The reason to do any of this in Nix:
-
-```sh
-nix flake init -t github:bry-lab/ArgosNix#engagement
-nix flake lock && nix flake archive     # pin, then fetch the whole closure
-git add flake.lock && git commit
-```
-
-Six months later, when a finding is disputed, `nix develop` rebuilds the exact
-toolchain that produced it — same nuclei templates, same sqlmap, same
-everything, whether or not the upstream repos still exist.
-
-## Contributing
-
-The most valuable contribution is not code. It is packaging one tool from
-`argos missing --tier 2` and, when it is broadly useful,
-[sending it to nixpkgs](docs/UPSTREAMING.md) rather than here.
-
-```sh
-nix develop .#dev
-argos missing --tier 2 --category web
-argos new sometool --upstream https://github.com/x/y --builder go
-nix-init --url https://github.com/x/y
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) and
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
 ## Scope and legality
 
-These are dual-use tools. Everything here is packaging of software that is
-already publicly available; nothing is a novel capability. Use it against
-systems you are authorised to test. Licensed commercial software is catalogued
-but never redistributed.
-
-## Licence
-
-The repo is MIT. Every packaged tool keeps its own licence — see the `license`
-field on each catalog entry.
+All tools in ArgosNix are publically availiable and the project is solely packaging them in 
+one place that is easy to load and offload. Use it against systems you are authorized to test. 
+Licensed commercial software is cataloged but never redistributed.
