@@ -121,10 +121,10 @@ examples/         ready-to-copy configs (a full VM system, and a module)
 ### Categories vs profiles
 
 Categories are how the catalog is organized (`web`, `active-directory`,
-`malware-analysis`, …). Profiles are how you use it (Ex: osint`, `webapp`, `network`, 
-`ad`, `wireless`, `radio`, `redteam`, `malware`, `revuln`, `dfir`, `cloud`, `mobile`, 
-`crypto`, `defense`, `ctf`, `full`). A profile is composed of one or more categories, 
-so OSINT and web testing share their recon tooling instead of two lists drifting apart.
+`malware-analysis`, etc). Profiles are how you use it (Ex: `osint`, `webapp`, `network`, 
+`ad`, `wireless`, `radio`, `redteam`, `malware`, `revuln`, `dfir`, `cloud`, `mobile`, `crypto`, 
+`defense`, `ctf`, `full`). A profile is composed of one or more categories, so OSINT and web testing 
+share their recon tooling instead of two lists drifting apart.
 
 ```sh
 nix run .#argos -- profile              # every profile and its coverage
@@ -236,7 +236,7 @@ nix profile add github:bry-lab/ArgosNix#osint
 nix profile remove osint          # offload one, keep the rest
 ```
 
-Keep the `hardware-configuration.nix` the installer generated — it holds your
+Keep the `hardware-configuration.nix` the installer generated, it holds your
 disk layout and is the one file the repo cannot ship for you.
 
 ## Scope and legality
